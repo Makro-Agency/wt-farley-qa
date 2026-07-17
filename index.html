@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#129514;</text></svg>">
+<title>WT Farley — Theme Revision QA & Testing Guide</title>
+<style>
+  :root {
+    --green: 6 155 0;            /* #009B00 WT Farley green */
+    --green-deep: 4 120 0;
+    --ink: 31 42 31;             /* #1f2a1f */
+    --ink-soft: 74 88 74;
+    --paper: 255 255 255;
+    --panel: 247 249 247;        /* #f7f9f7 */
+    --line: 210 212 210;         /* #d2d4d2 */
+    --amber: 176 104 0;
+    --amber-bg: 255 247 232;
+    --amber-line: 240 208 150;
+    --radius: 12px;
+    --maxw: 1080px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --green: 74 210 66;
+      --green-deep: 120 225 112;
+      --ink: 226 232 226;
+      --ink-soft: 165 178 165;
+      --paper: 18 22 18;
+      --panel: 28 34 28;
+      --line: 52 62 52;
+      --amber: 240 196 120;
+      --amber-bg: 42 34 18;
+      --amber-line: 90 72 34;
+    }
+  }
+  :root[data-theme="dark"] {
+    --green: 74 210 66; --green-deep: 120 225 112; --ink: 226 232 226; --ink-soft: 165 178 165;
+    --paper: 18 22 18; --panel: 28 34 28; --line: 52 62 52;
+    --amber: 240 196 120; --amber-bg: 42 34 18; --amber-line: 90 72 34;
+  }
+  :root[data-theme="light"] {
+    --green: 6 155 0; --green-deep: 4 120 0; --ink: 31 42 31; --ink-soft: 74 88 74;
+    --paper: 255 255 255; --panel: 247 249 247; --line: 210 212 210;
+    --amber: 176 104 0; --amber-bg: 255 247 232; --amber-line: 240 208 150;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font); color: rgb(var(--ink));
+    background: rgb(var(--paper)); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header.hero {
+    border-bottom: 1px solid rgb(var(--line));
+    background: linear-gradient(180deg, rgb(var(--panel)), rgb(var(--paper)));
+  }
+  .hero__inner { padding: 48px 0 40px; }
+  .eyebrow {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    text-transform: uppercase; color: rgb(var(--green));
+    padding: 5px 12px; border: 1px solid rgb(var(--green) / 0.4); border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  h1 { font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin: 0 0 12px; letter-spacing: -0.5px; text-wrap: balance; }
+  .lede { font-size: 18px; color: rgb(var(--ink-soft)); max-width: 60ch; margin: 0; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .chip {
+    font-size: 13px; background: rgb(var(--paper)); border: 1px solid rgb(var(--line));
+    border-radius: 100px; padding: 6px 14px; color: rgb(var(--ink-soft));
+  }
+  .chip strong { color: rgb(var(--ink)); font-weight: 600; }
+
+  /* Layout */
+  .layout { display: grid; grid-template-columns: 232px 1fr; gap: 40px; padding: 40px 0 80px; }
+  nav.toc { position: sticky; top: 20px; align-self: start; font-size: 14px; }
+  nav.toc .toc__group { margin-bottom: 18px; }
+  nav.toc .toc__title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgb(var(--ink-soft)); margin: 0 0 8px; font-weight: 700; }
+  nav.toc a { display: block; color: rgb(var(--ink-soft)); text-decoration: none; padding: 5px 10px; border-radius: 7px; border-left: 2px solid transparent; }
+  nav.toc a:hover { color: rgb(var(--ink)); background: rgb(var(--panel)); border-left-color: rgb(var(--green)); }
+
+  main { min-width: 0; }
+  section.card {
+    background: rgb(var(--paper)); border: 1px solid rgb(var(--line));
+    border-radius: var(--radius); padding: 28px 30px; margin-bottom: 22px; scroll-margin-top: 20px;
+  }
+  section.card > h2 { font-size: 22px; margin: 0 0 4px; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
+  .page-url { font-size: 13px; color: rgb(var(--green-deep)); font-family: ui-monospace, "SF Mono", Menlo, monospace; word-break: break-all; margin: 2px 0 18px; }
+  .page-url a { color: inherit; }
+  h3 { font-size: 15px; margin: 22px 0 10px; color: rgb(var(--ink)); }
+  .num {
+    display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto;
+    width: 26px; height: 26px; border-radius: 8px; background: rgb(var(--green) / 0.14);
+    color: rgb(var(--green-deep)); font-size: 13px; font-weight: 700;
+  }
+
+  /* Test checklist */
+  ul.checks { list-style: none; margin: 0; padding: 0; }
+  ul.checks > li {
+    display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start;
+    padding: 11px 0; border-top: 1px solid rgb(var(--line));
+  }
+  ul.checks > li:first-child { border-top: none; }
+  .box {
+    width: 18px; height: 18px; margin-top: 2px; border: 2px solid rgb(var(--line));
+    border-radius: 5px; flex: 0 0 auto;
+  }
+  .li-body b { font-weight: 650; }
+  .li-body .exp { display: block; color: rgb(var(--ink-soft)); font-size: 14px; margin-top: 2px; }
+  .li-body .exp::before { content: "Expected: "; color: rgb(var(--green-deep)); font-weight: 600; }
+
+  .tag { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+  .tag--new { background: rgb(var(--green) / 0.15); color: rgb(var(--green-deep)); }
+  .tag--rev { background: rgb(var(--panel)); color: rgb(var(--ink-soft)); border: 1px solid rgb(var(--line)); }
+
+  /* Out of scope section */
+  .oos { border-color: rgb(var(--amber-line)); background: rgb(var(--amber-bg)); }
+  .oos h2 { color: rgb(var(--amber)); }
+  table.oos-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.oos-tbl th, table.oos-tbl td { text-align: left; vertical-align: top; padding: 12px 12px; border-bottom: 1px solid rgb(var(--amber-line)); }
+  table.oos-tbl th { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: rgb(var(--amber)); }
+  .tbl-scroll { overflow-x: auto; }
+  .callout { border-left: 3px solid rgb(var(--green)); background: rgb(var(--panel)); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; color: rgb(var(--ink-soft)); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgb(var(--panel)); padding: 1px 6px; border-radius: 5px; }
+  footer { border-top: 1px solid rgb(var(--line)); padding: 28px 0 60px; color: rgb(var(--ink-soft)); font-size: 13px; }
+
+  @media (max-width: 820px) {
+    .layout { grid-template-columns: 1fr; gap: 0; }
+    nav.toc { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap hero__inner">
+    <span class="eyebrow">WT Farley · Theme Revision</span>
+    <h1>Storefront QA &amp; Testing Guide</h1>
+    <p class="lede">Step-by-step checks for every key page touched in this revision, plus a separate list of catalog data-migration issues that surface on the storefront and are out of scope for this theme revision.</p>
+    <div class="meta-row">
+      <span class="chip"><strong>Store:</strong> wt-farley.myshopify.com</span>
+      <span class="chip"><strong>Plan:</strong> Shopify Plus</span>
+      <span class="chip"><strong>Test on:</strong> latest Chrome, Safari, plus one mobile device</span>
+      <span class="chip tag--new" style="color:rgb(var(--green-deep))">New / revised in this pass</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap layout">
+  <nav class="toc" aria-label="Contents">
+    <div class="toc__group">
+      <p class="toc__title">How to test</p>
+      <a href="#how">Before you start</a>
+    </div>
+    <div class="toc__group">
+      <p class="toc__title">Pages</p>
+      <a href="#header">Header, Nav &amp; Search</a>
+      <a href="#home">Home</a>
+      <a href="#collection">Collection</a>
+      <a href="#search">Search Results</a>
+      <a href="#pdp">Product (standard)</a>
+      <a href="#configurator">Product Configurator</a>
+      <a href="#cart">Cart &amp; Checkout entry</a>
+      <a href="#dealer">Become a Dealer</a>
+      <a href="#testimonials">Customer Testimonials</a>
+      <a href="#contact">Contact</a>
+      <a href="#mobile">Mobile &amp; Responsive</a>
+    </div>
+    <div class="toc__group">
+      <p class="toc__title">Scope</p>
+      <a href="#oos">Data issues (out of scope)</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="card" id="how">
+      <h2>Before you start</h2>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Test the live theme and the draft.</b><span class="exp">Live is <code>wt-farley/main</code>; the working draft is <code>wt-farley/main fixes</code>. Preview the draft with <code>?preview_theme_id=156346646666</code> appended to any URL.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Hard refresh between checks.</b><span class="exp">Use Cmd/Ctrl+Shift+R so you are not seeing a cached page, especially after any theme push.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Check desktop and mobile for each page.</b><span class="exp">Layouts differ; the mobile section at the bottom lists the mobile-specific things to confirm.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Flag anything about product wording, prices, images, or specs separately.</b><span class="exp">Those are catalog/data items covered in the last section, not theme bugs.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- HEADER -->
+    <section class="card" id="header">
+      <h2>Header, Navigation &amp; Search <span class="tag tag--rev">revised</span></h2>
+      <p class="page-url">Present on every page</p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Sticky header stays on scroll.</b><span class="exp">Header and menu remain pinned to the top as you scroll down a long page.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Mega menu opens for each top category.</b><span class="exp">Hover/click each nav item; sub-categories render and links resolve to the right collections.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Quick search dropdown.</b><span class="exp">Typing shows two columns: <b>Categories</b> and <b>Products</b>, with compact product cards (image, SKU, title, price).</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Enter opens the full search page.</b><span class="exp">Pressing Enter in the search box navigates to <code>/search?q=…</code>, it does not just close the dropdown.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Lookup mode (part number).</b><span class="exp">Switching to <b>Lookup</b> and entering a part number behaves as designed (auto-fill / hand-off). Note any part numbers that return nothing — see data section.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Cart count badge.</b><span class="exp">Adding an item updates the header cart count without a full reload.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- HOME -->
+    <section class="card" id="home">
+      <h2>Home</h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/">wt-farley.myshopify.com/</a></p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>All sections render top to bottom.</b><span class="exp">Banners, featured collections/products, and any promotional rows load with no broken images or empty blocks.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Links go to real destinations.</b><span class="exp">Every button/tile links to an existing collection, product, or page (no 404s).</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Featured product cards match the collection card design.</b><span class="exp">Same layout, spacing, price, and Buy / Quick View button alignment as collection pages.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- COLLECTION -->
+    <section class="card" id="collection">
+      <h2>Collection page <span class="tag tag--rev">revised</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/collections/all">/collections/all</a> · and any category, e.g. <code>/collections/cylinder-carts</code></p>
+      <h3>Layout &amp; cards</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Toolbar spacing matches design.</b><span class="exp">Padding above/below the toolbar and the gap down to the product grid look balanced (not cramped).</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Product cards aligned.</b><span class="exp">Image, title, one-line description, price, and Buy / Quick View buttons line up across the whole grid.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Card description shows one sentence.</b><span class="exp">First sentence of the product description only; cards with no description hide the line cleanly (no empty gap).</span></span></li>
+      </ul>
+      <h3>Filters, sorting &amp; loading</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Sticky filters and toolbar.</b><span class="exp">Filter sidebar and toolbar stay in view while the grid scrolls.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Filtering is instant.</b><span class="exp">Selecting a checkbox filter updates the grid immediately, no visible "page stops then shows" jump.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Sorting works.</b><span class="exp">Each sort option reorders the grid correctly.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Infinite scroll.</b><span class="exp">Scrolling to the bottom loads more products automatically.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Price filter range.</b><span class="exp">The "To" max should reflect the collection's real highest price. If it looks too low, that is a search-index / data item, see data section.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="card" id="search">
+      <h2>Search results page <span class="tag tag--rev">revised</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/search?q=oxygen">/search?q=oxygen</a></p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Parity with the collection page.</b><span class="exp">Product grid, cards, filters, sorting, list/grid toggle, sticky behaviour, and infinite scroll all behave the same as a collection page.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Relevant results.</b><span class="exp">Searching a product name, SKU, or keyword returns sensible matches.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Grid and List modes.</b><span class="exp">Both render like the collection page equivalents.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Empty query / no results.</b><span class="exp">A search with no matches shows a clean "no results" state, not a broken layout.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- PDP -->
+    <section class="card" id="pdp">
+      <h2>Product page — standard <span class="tag tag--new">new dropdowns</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/products/oxygen-mini-body-click-regulator">/products/oxygen-mini-body-click-regulator</a> (multi-option example)</p>
+      <h3>Custom variant dropdowns</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Dropdowns use the new pill design.</b><span class="exp">Each variant option shows a rounded pill with the selected value and a chevron, not the old grey box.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Opening shows the floating list.</b><span class="exp">Clicking opens a white rounded panel of options; a second click / outside click / Esc closes it.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Selecting updates the product.</b><span class="exp">Choosing a value updates price, SKU, availability, image, and the URL, exactly as before.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Out-of-stock options are greyed.</b><span class="exp">Unavailable combinations show the option at reduced opacity and cannot be selected.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Colour options stay swatches.</b><span class="exp">Colour-type options still render as swatches, not dropdowns.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Keyboard access.</b><span class="exp">Tab to the dropdown, open with Enter/Space, arrow keys move through options, Enter selects.</span></span></li>
+      </ul>
+      <h3>Buy &amp; media</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Add to Cart.</b><span class="exp">Adds the correct variant; cart count and drawer update.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Sticky Add-to-Cart bar.</b><span class="exp">Appears on scroll and shows a single, correct price (no doubled price).</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Specs / description render cleanly.</b><span class="exp">No raw HTML tags or code visible in the feature bullets or description. Report any that appear (data item).</span></span></li>
+      </ul>
+    </section>
+
+    <!-- CONFIGURATOR -->
+    <section class="card" id="configurator">
+      <h2>Product Configurator <span class="tag tag--rev">revised</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/products/oxygen-hose?gas=selected">/products/oxygen-hose?gas=selected</a></p>
+      <h3>Image layering</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Base assembly shows.</b><span class="exp">Selecting a gas type shows the base hose in the preview.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Fittings layer onto the ends.</b><span class="exp">Choosing an Inlet / Outlet fitting stacks its image at the correct end of the hose, aligned (not floating or centered).</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Changing an option swaps its layer.</b><span class="exp">Each new selection replaces the previous layer for that option immediately.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>"Not Included" / blank options clear their layer.</b><span class="exp">No leftover image remains when an option is set to none.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Options without artwork still work.</b><span class="exp">Length, swivel, elbow, etc. with no layer image do not break the preview; the assembly still shows.</span></span></li>
+      </ul>
+      <h3>Part number, price &amp; buy</h3>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Part number builds live.</b><span class="exp">The Part Number field updates as options change.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Price updates live.</b><span class="exp">Price reflects the base plus any option deltas.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Gas type switcher.</b><span class="exp">Switching gas (e.g. Oxygen to Air) swaps to the correct sibling product / colour.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Reset configurator.</b><span class="exp">Reset returns all options to defaults and clears the preview layers.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Add configured item to cart.</b><span class="exp">The built assembly adds with the correct part number and price.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Part-number Lookup bar.</b><span class="exp">Entering a known part number auto-fills the configurator. Note any that fail — see data section.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- CART -->
+    <section class="card" id="cart">
+      <h2>Cart &amp; Checkout entry</h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/cart">/cart</a> and the cart drawer</p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Line items correct.</b><span class="exp">Product title, selected options / configured part number, price, and quantity are right.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Quantity &amp; remove.</b><span class="exp">Updating quantity and removing a line recalculates totals correctly.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Checkout button.</b><span class="exp">Proceeds to Shopify checkout with the right contents.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- DEALER -->
+    <section class="card" id="dealer">
+      <h2>Become a WT Farley Dealer <span class="tag tag--new">new fields</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/pages/become-a-wt-farley-dealer">/pages/become-a-wt-farley-dealer</a></p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>All fields present.</b><span class="exp">Business Type, First Name, Last Name, Company, Tax ID, Phone, Email, Address, Suite/Apt #, City, State/Province, Zip, Country, Comments — matching the old register form.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Required-field validation.</b><span class="exp">Submitting with First/Last/Company/Email blank is blocked with a clear message.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Successful submit.</b><span class="exp">A valid submission shows the success state and emails the WT Farley inbox with every field included.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Layout.</b><span class="exp">Paired fields sit two-up on desktop and stack cleanly on mobile.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="card" id="testimonials">
+      <h2>Customer Testimonials <span class="tag tag--new">new page</span></h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/pages/customer-testimonials">/pages/customer-testimonials</a></p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Trustpilot widget loads.</b><span class="exp">The live, Trustpilot-branded reviews grid renders (green stars + Trustpilot logo), showing 4-5 star reviews.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Intro copy shows above the widget.</b><span class="exp">Page title and the intro paragraph render.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>If the widget is blank:</b><span class="exp">That is a Trustpilot account setting (plan must include the Grid TrustBox; allowed domains must include this store's domain), not a theme bug.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Add to navigation.</b><span class="exp">The page is published but not yet linked in a menu — confirm whether it should appear in the footer or main nav.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="card" id="contact">
+      <h2>Contact</h2>
+      <p class="page-url"><a href="https://wt-farley.myshopify.com/pages/contact">/pages/contact</a></p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>Form renders as before.</b><span class="exp">Name, phone, email, subject/department, and message; unaffected by the dealer-form changes.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Submit works.</b><span class="exp">A valid message sends and shows the success state.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- MOBILE -->
+    <section class="card" id="mobile">
+      <h2>Mobile &amp; Responsive</h2>
+      <p class="page-url">Repeat key checks on a phone (or dev-tools device mode)</p>
+      <ul class="checks">
+        <li><span class="box"></span><span class="li-body"><b>No horizontal scrolling.</b><span class="exp">Pages fit the viewport; wide tables/grids scroll inside their own container only.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Collection &amp; search.</b><span class="exp">Filters open/close as a mobile drawer; grid, sort, and infinite scroll work.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Variant dropdowns.</b><span class="exp">Pill dropdowns open, the list is scrollable, and options are easily tappable.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Configurator.</b><span class="exp">Preview and options stack sensibly; layering still renders.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Forms.</b><span class="exp">Dealer and contact fields stack and are usable with a mobile keyboard.</span></span></li>
+      </ul>
+    </section>
+
+    <!-- OUT OF SCOPE -->
+    <section class="card oos" id="oos">
+      <h2>Data-migration issues (out of scope for this revision)</h2>
+      <p style="margin-top:0;color:rgb(var(--ink-soft));font-size:15px;">These surface on the storefront but originate from the <b>migrated catalog data</b> (Shift4Shop → Shopify) or from search indexing, not from the theme build. Listed here so they can be flagged and handled as a separate content/data task.</p>
+      <div class="tbl-scroll">
+      <table class="oos-tbl">
+        <thead><tr><th style="width:26%">Issue</th><th style="width:30%">Where it shows</th><th>Why it is data, not theme</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Empty product descriptions</b></td>
+            <td>~24 products (mostly gas hoses, some poles/racks) show a title but no description on the PDP and a blank description line on cards.</td>
+            <td>These products only ever held the old "call 843-536-9050" shipping notice, which was removed as wrong/legacy. They need real copy written — a content task, not a template fix.</td>
+          </tr>
+          <tr>
+            <td><b>Understated price-filter maximum</b></td>
+            <td>Some collections show a price-filter "To" value far below the actual highest product price.</td>
+            <td>The theme reads Shopify's own filter range; the low number is a stale Search &amp; Discovery index after migration + bulk edits. Resolves on reindex / re-saving the Price filter in the Search &amp; Discovery app.</td>
+          </tr>
+          <tr>
+            <td><b>Sparse or missing specifications</b></td>
+            <td>PDP feature/spec bullets are thin or absent on some products.</td>
+            <td>Spec content was cleaned of raw HTML, but where the source data had little/no spec content there is nothing to show. Needs data entry per product.</td>
+          </tr>
+          <tr>
+            <td><b>Part-number Lookup misses / test SKUs</b></td>
+            <td>Header Lookup and the configurator Lookup bar sometimes return nothing, or surface obvious test SKUs.</td>
+            <td>Composite/configured part numbers are not stored as variant SKUs, and some pilot/test SKUs remain in the catalog. This is catalog data hygiene + the lookup data source, not the theme UI.</td>
+          </tr>
+          <tr>
+            <td><b>Missing / placeholder product images</b></td>
+            <td>Occasional products with no image or a generic placeholder in grids and PDPs.</td>
+            <td>Images that did not carry over in migration. Needs image upload per product.</td>
+          </tr>
+          <tr>
+            <td><b>Configurator option artwork gaps</b></td>
+            <td>A few fitting options have no layer image, so nothing stacks for that choice.</td>
+            <td>The layering engine is fixed and works for any full-canvas image; the remaining gaps are simply option choices that do not yet have artwork uploaded.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="callout">Note: the Trustpilot testimonials widget depending on the Trustpilot account plan/allowed-domains is a third-party account setting, related but separate from catalog migration.</div>
+    </section>
+
+    <footer>
+      Prepared by Makro Agency for the WT Farley theme revision. URLs use the <code>.myshopify.com</code> domain; swap in the production domain once live. Checkboxes are for visual tracking — use your own tracker for sign-off.
+    </footer>
+  </main>
+</div>
+</body>
+</html>
