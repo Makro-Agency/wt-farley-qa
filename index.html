@@ -125,6 +125,11 @@
   table.oos-tbl th { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: rgb(var(--amber)); }
   .tbl-scroll { overflow-x: auto; }
   .callout { border-left: 3px solid rgb(var(--green)); background: rgb(var(--panel)); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 16px 0; font-size: 14px; color: rgb(var(--ink-soft)); }
+  table.cache-tbl { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 14px; }
+  table.cache-tbl th, table.cache-tbl td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid rgb(var(--line)); }
+  table.cache-tbl th { font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: rgb(var(--green-deep)); }
+  table.cache-tbl td:first-child { white-space: nowrap; font-weight: 600; }
+  .kbd { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em; background: rgb(var(--panel)); border: 1px solid rgb(var(--line)); padding: 1px 6px; border-radius: 5px; white-space: nowrap; }
   code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgb(var(--panel)); padding: 1px 6px; border-radius: 5px; }
   footer { border-top: 1px solid rgb(var(--line)); padding: 28px 0 60px; color: rgb(var(--ink-soft)); font-size: 13px; }
 
@@ -180,10 +185,47 @@
       <h2>Before you start</h2>
       <ul class="checks">
         <li><span class="box"></span><span class="li-body"><b>Test the live theme and the draft.</b><span class="exp">Live is <code>wt-farley/main</code>; the working draft is <code>wt-farley/main fixes</code>. Preview the draft with <code>?preview_theme_id=156346646666</code> appended to any URL.</span></span></li>
-        <li><span class="box"></span><span class="li-body"><b>Hard refresh between checks.</b><span class="exp">Use Cmd/Ctrl+Shift+R so you are not seeing a cached page, especially after any theme push.</span></span></li>
+        <li><span class="box"></span><span class="li-body"><b>Hard refresh between checks.</b><span class="exp">Reload bypassing the cache so you are not seeing a stale page, especially after any theme push. The shortcut differs by device and browser &mdash; see the table below.</span></span></li>
         <li><span class="box"></span><span class="li-body"><b>Check desktop and mobile for each page.</b><span class="exp">Layouts differ; the mobile section at the bottom lists the mobile-specific things to confirm.</span></span></li>
         <li><span class="box"></span><span class="li-body"><b>Flag anything about product wording, prices, images, or specs separately.</b><span class="exp">Those are catalog/data items covered in the last section, not theme bugs.</span></span></li>
       </ul>
+
+      <h3 style="margin:26px 0 4px;font-size:15px;">How to hard refresh / clear the cache on any device</h3>
+      <p style="margin:0;color:rgb(var(--ink-soft));font-size:14px;">On a computer a hard refresh reloads the page while ignoring the cache. On phones and tablets there is no hard-refresh shortcut, so you clear the site cache instead (or use a private/incognito tab, which never caches).</p>
+      <div class="tbl-scroll">
+      <table class="cache-tbl">
+        <thead>
+          <tr><th>Device / Browser</th><th>What to do</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mac &mdash; Chrome, Edge, Firefox</td>
+            <td>Press <span class="kbd">Cmd + Shift + R</span></td>
+          </tr>
+          <tr>
+            <td>Mac &mdash; Safari</td>
+            <td>Press <span class="kbd">Cmd + Option + R</span>. If it still looks stale, open the <b>Develop</b> menu &rarr; <b>Empty Caches</b> (or press <span class="kbd">Cmd + Option + E</span>), then reload with <span class="kbd">Cmd + R</span>.</td>
+          </tr>
+          <tr>
+            <td>Windows / Linux &mdash; Chrome, Edge, Firefox</td>
+            <td>Press <span class="kbd">Ctrl + Shift + R</span> (or <span class="kbd">Ctrl + F5</span>)</td>
+          </tr>
+          <tr>
+            <td>iPhone / iPad &mdash; Safari</td>
+            <td>Quickest: open the page in a <b>Private</b> tab. To clear the cache: <b>Settings &rarr; Safari &rarr; Advanced &rarr; Website Data</b>, search for <code>wtfarley</code> and swipe to delete, then reopen the page.</td>
+          </tr>
+          <tr>
+            <td>iPhone / iPad &mdash; Chrome</td>
+            <td>Chrome menu (&middot;&middot;&middot;) &rarr; <b>Delete Browsing Data</b> &rarr; tick <b>Cached Images and Files</b> &rarr; confirm, then reopen the page. Or use an Incognito tab.</td>
+          </tr>
+          <tr>
+            <td>Android &mdash; Chrome</td>
+            <td>Chrome menu (&middot;&middot;&middot;) &rarr; <b>Delete browsing data</b> &rarr; tick <b>Cached images and files</b> &rarr; <b>Delete data</b>, then reopen the page. Or use an Incognito tab.</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="margin:12px 0 0;color:rgb(var(--ink-soft));font-size:13px;">Tip: on any device, a private / incognito window is the fastest way to be sure you are seeing the newest theme, since it starts with no cached files.</p>
     </section>
 
     <!-- HEADER -->
