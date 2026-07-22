@@ -94,7 +94,7 @@
 <tr><td class="feat">Header navigation</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Sticky header and menu (15 Jul). Extras beyond scope: SKU Lookup mode in the header search.</td></tr>
 <tr><td class="feat">Mega menu</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Full mega menu rebuilt from the old site structure via API (11 Jul).</td></tr>
 <tr><td class="feat">Footer navigation</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Social and legal links live. The three placeholder links flagged on 13 Jul (COA Finder, Catalog, Locations) no longer render on the storefront.</td></tr>
-<tr><td class="feat">Search dropdown</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Quick-search redesigned into Categories + Products panels, plus the Lookup toggle. Note: free-text works, part numbers resolve through Lookup, not native search.</td></tr>
+<tr><td class="feat">Search dropdown</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Quick-search redesigned into Categories + Products panels, plus the Lookup toggle. Part-number-shaped queries auto-route to Lookup as of 22 Jul; test SKUs removed from the template markup.</td></tr>
 <tr><td class="feat">Home page / global section library</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Homepage assembled from the section library, including the 18-card Shop by Category grid (Figma assets).</td></tr>
 <tr><td class="feat">Search results / no results</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Search page has full collection-page parity: same grid, filters, toolbar.</td></tr>
 <tr><td class="feat">PLP: grid, banner, filter, sort</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Collection banner, sticky filters and toolbar (15 Jul).</td></tr>
@@ -128,7 +128,7 @@
 <tr><td class="feat">Shopify Search &amp; Discovery</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Filters and facets running on PLP and search.</td></tr>
 <tr><td class="feat">Reviews and rating app</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Judge.me scripts present on the storefront; scope assumed Yotpo. Align with client, then confirm placement.</td></tr>
 <tr><td class="feat">Cookie banner (Pandectes)</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Pandectes detected on the storefront.</td></tr>
-<tr><td class="feat">GA4 / GTM analytics</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">No GTM container or gtag detected in storefront HTML on 22 Jul. Klaviyo is present. If GA4 runs through the Shopify Google channel it will not show as gtag; confirm and close either way before launch.</td></tr>
+<tr><td class="feat">GA4 / GTM analytics</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">GA4 runs through Shopify's Google &amp; YouTube channel (confirmed 22 Jul), which is why no gtag/GTM snippet appears in storefront HTML. Klaviyo also present.</td></tr>
 </tbody></table>
 
 <h2>E. Platform and launch</h2>
@@ -138,7 +138,7 @@
 <tr><td class="feat">Domain setup</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">Store still on <code>wt-farley.myshopify.com</code>. Domain cutover is a launch-day task.</td></tr>
 <tr><td class="feat">Sitemap and robots.txt</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Native sitemaps live and correct. Note: <code>/pages/page-template</code> is published and appears in the sitemap; unpublish it.</td></tr>
 <tr><td class="feat">SEO: meta tags, friendly URLs</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Native handling. 9 product handles still end in <code>-html</code> (legacy import artifact); keep or rename with redirects.</td></tr>
-<tr><td class="feat">SEO: 301 redirects</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Legacy path redirects now return 301 (the 13 Jul gap is closed). Old <code>_c_NN.html</code> style category URLs still 404 in sampling; extend the redirect map before launch.</td></tr>
+<tr><td class="feat">SEO: 301 redirects</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Legacy slug redirects live (301). For the old <code>_p_/_c_ .html</code> pattern an 834-entry map (809 products, 25 categories, targets verified against live handles) is built and queued for import; 76 legacy URLs have no live equivalent.</td></tr>
 <tr><td class="feat">Content guides / training</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">17-page Store Owner's Guide live on GitHub Pages (makro-agency.github.io/wt-farley-docs). Training session not yet scheduled.</td></tr>
 <tr><td class="feat">Pre-launch checklist / launch plan</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">To be drafted once QA sign-off lands.</td></tr>
 </tbody></table>

@@ -318,7 +318,7 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
       <div class="merge-arrow">↓</div>
       <div class="merge-step subdued"><p>Entering a part number on the wrong product page routes to the right product automatically.</p></div>
     </div>
-    <div class="discuss"><span class="k">Honest note</span> Legacy composite part numbers resolve through suggestions rather than an exact match, because they never existed as single SKUs. Typing a part number into the regular search (not Lookup) returns nothing; we recommend routing those queries to Lookup automatically and we cover it in training.</div>
+    <div class="discuss"><span class="k">Two notes</span> Legacy composite part numbers resolve through suggestions rather than an exact match, because they never existed as single SKUs. And as of today, typing a part number into the regular search switches to Lookup automatically, so shoppers cannot land on an empty search page.</div>
   </div>
 </div>
 
@@ -395,9 +395,9 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
     <h2 class="hdr">What is still open, and who holds the ball.</h2>
     <div class="status-table">
       <div class="row">
-        <span class="topic">Analytics (GA4 / GTM)</span>
-        <span class="pill open">Makro + you</span>
-        <span class="note">No tag detected on the storefront; we confirm the setup and close it before launch.</span>
+        <span class="topic">Analytics (GA4)</span>
+        <span class="pill closed">Resolved</span>
+        <span class="note">Runs through Shopify's Google and YouTube channel; no separate tag needed on the storefront.</span>
       </div>
       <div class="row">
         <span class="topic">Reviews app</span>
@@ -421,13 +421,13 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
       </div>
       <div class="row">
         <span class="topic">Redirect map extension</span>
-        <span class="pill open">Makro</span>
-        <span class="note">Older .html category URLs from the legacy site get added to the redirect map before launch.</span>
+        <span class="pill partial">In progress</span>
+        <span class="note">834 redirects for the old .html URLs built and verified against live pages; import queued before launch.</span>
       </div>
       <div class="row">
         <span class="topic">Lookup polish</span>
-        <span class="pill open">Makro</span>
-        <span class="note">Remove sample part numbers from the header suggestions; route part-number searches to Lookup.</span>
+        <span class="pill closed">Done today</span>
+        <span class="note">Part-number searches now route to Lookup automatically; sample part numbers removed from the markup.</span>
       </div>
     </div>
   </div>
