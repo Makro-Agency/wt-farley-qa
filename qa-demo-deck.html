@@ -15,14 +15,10 @@
   --line-dark: rgba(19,18,16,0.10); --line-dark-strong: rgba(19,18,16,0.18); --line-dark-subtle: rgba(19,18,16,0.06);
   --red: #E53935; --green: #4CAF50; --amber: #D97706;
   --font: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Inter', sans-serif;
-  --t-hero: clamp(2.5rem, 5.5vw, 4.375rem);
-  --t-display: clamp(2rem, 4vw, 3rem);
-  --t-h2: clamp(1.5rem, 2.5vw, 2rem);
-  --t-h3: 1.25rem; --t-h4: 1.125rem;
   --t-body-lg: 1.0625rem; --t-body: 1rem; --t-sm: 0.875rem; --t-xs: 0.75rem; --t-label: 0.6875rem;
+  --t-h3: 1.25rem;
   --tr-hero: -0.04em; --tr-display: -0.03em; --tr-h3: -0.015em; --tr-body: -0.011em; --tr-label: 0.06em;
-  --lh-body: 1.55;
-  --r-sm: 3px;
+  --lh-body: 1.55; --r-sm: 3px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,7 +41,6 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
 .light .eyebrow { color: var(--text-dark-50); }
 .em { font-weight: 400; font-style: normal; }
 .dark .em { color: var(--text-50); }
-.light .em { color: var(--text-dark-50); }
 .hdr { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 400; letter-spacing: var(--tr-display); line-height: 1.15; max-width: 34ch; }
 .light .hdr { color: var(--text-dark); }
 .cover .s-inner { gap: 24px; }
@@ -55,59 +50,20 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
 .cover .meta-row .m { display: flex; flex-direction: column; gap: 4px; }
 .cover .meta-row .k { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); }
 .cover .meta-row .v { font-size: var(--t-sm); color: var(--text); }
-.section-cover .s-inner { gap: 32px; align-items: flex-start; }
-.section-cover .marker { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); }
-.section-cover h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: 0.95; letter-spacing: var(--tr-hero); font-weight: 400; max-width: 16ch; }
-.section-cover .summary { font-size: var(--t-body-lg); color: var(--text-70); max-width: 56ch; line-height: 1.55; margin-top: 24px; }
 .pillars { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 8px; }
-.pillars .pillar { background: var(--bg); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; min-height: 220px; }
+.pillars .pillar { background: var(--bg); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; min-height: 200px; }
 .pillars .pillar .num { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); }
 .pillars .pillar h3 { font-size: var(--t-h3); font-weight: 500; line-height: 1.2; }
 .pillars .pillar p { font-size: var(--t-sm); color: var(--text-70); line-height: 1.5; margin-top: auto; }
 .wf { display: flex; flex-direction: column; gap: 0; }
-.wf .step { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--line-subtle); }
+.wf .step { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 12px 0; border-bottom: 1px solid var(--line-subtle); }
 .wf .step:last-child { border-bottom: none; }
 .wf .step .n { font-size: var(--t-xs); color: var(--text-50); letter-spacing: var(--tr-label); text-transform: uppercase; padding-top: 3px; font-variant-numeric: tabular-nums; }
 .wf .step .txt { font-size: var(--t-sm); color: var(--text-90); line-height: 1.5; }
-.wf .step .txt .tag { font-size: 10px; color: var(--text-50); margin-left: 8px; letter-spacing: 0.02em; }
 .wf .step.hero .n { color: var(--red); font-weight: 500; }
 .wf .step.hero .txt { color: var(--text); font-weight: 450; }
 .wf .step .txt code { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; color: var(--text-70); }
-.feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); }
-.feat-grid .cluster { background: var(--light); padding: 22px 18px; display: flex; flex-direction: column; gap: 10px; }
-.feat-grid .cluster .num { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-dark-50); }
-.feat-grid .cluster h3 { font-size: var(--t-body); font-weight: 500; }
-.feat-grid .cluster ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-.feat-grid .cluster li { font-size: var(--t-xs); color: var(--text-dark-70); line-height: 1.5; }
-.status-table { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.status-table .row { display: grid; grid-template-columns: 240px 110px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line-subtle); align-items: baseline; }
-.status-table .row:last-child { border-bottom: none; }
-.status-table .topic { font-size: var(--t-sm); color: var(--text); font-weight: 450; }
-.status-table .pill { font-size: 10px; padding: 3px 8px; border-radius: 12px; text-align: center; letter-spacing: 0.02em; }
-.status-table .pill.closed { background: rgba(76, 175, 80, 0.15); color: var(--green); border: 1px solid rgba(76, 175, 80, 0.3); }
-.status-table .pill.partial { background: rgba(217, 119, 6, 0.15); color: var(--amber); border: 1px solid rgba(217, 119, 6, 0.3); }
-.status-table .pill.open { background: rgba(229, 57, 53, 0.15); color: var(--red); border: 1px solid rgba(229, 57, 53, 0.3); }
-.status-table .note { font-size: var(--t-xs); color: var(--text-70); line-height: 1.5; }
-.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
-.before-after .col { background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 24px 22px; }
-.before-after .col-label { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); margin-bottom: 12px; }
-.before-after .col h3 { font-size: 18px; font-weight: 500; margin-bottom: 12px; }
-.before-after .col.before h3 { color: var(--text-70); }
-.before-after .col.after h3 { color: var(--text); }
-.before-after .col ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
-.before-after .col li { font-size: var(--t-xs); color: var(--text-70); padding: 4px 0; line-height: 1.4; }
-.before-after .col.before li { color: var(--text-50); }
-.before-after .col.after li { color: var(--text-90); font-weight: 450; padding: 6px 10px; background: var(--bg); border-radius: 4px; }
-.flow-two { display: flex; flex-direction: column; gap: 0; align-items: stretch; }
-.flow-two .entry-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.flow-two .entry-pair .entry { background: var(--bg); padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; }
-.flow-two .entry-pair .entry .e-num { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--red); }
-.flow-two .entry-pair .entry p { font-size: var(--t-sm); color: var(--text); line-height: 1.45; }
-.flow-two .merge-arrow { text-align: center; font-size: 18px; color: var(--text-30); padding: 8px 0; line-height: 1; }
-.flow-two .merge-step { background: var(--bg); padding: 16px 22px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); }
-.flow-two .merge-step p { font-size: var(--t-sm); color: var(--text); line-height: 1.5; }
-.flow-two .merge-step.subdued { background: transparent; border-style: dashed; border-color: var(--line); }
-.flow-two .merge-step.subdued p { color: var(--text-70); }
+.page-tag { display: inline-block; font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; color: var(--text-70); background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 5px 12px; margin-bottom: 4px; }
 .discuss { padding: 16px 20px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg-elevated); margin-top: 8px; font-size: var(--t-xs); color: var(--text-90); line-height: 1.55; }
 .discuss .k { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-70); margin-right: 8px; }
 .closing .s-inner { gap: 32px; align-items: flex-start; }
@@ -123,328 +79,205 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
 
 <div class="progress"><div class="fill" id="progressFill"></div></div>
 <div class="logo-fixed">makro<span class="dot">.</span><span class="client">× WT Farley</span></div>
-<div class="slide-num" id="slideNum">01 / 13</div>
+<div class="slide-num" id="slideNum">01 / 12</div>
 <div class="nav-hint">← → or click to navigate</div>
 
-<!-- SLIDE 1 · Cover -->
+<!-- SLIDE 1: Cover -->
 <div class="slide dark cover active" data-slide="1">
   <div class="s-inner">
-    <span class="eyebrow">Shopify replatform · WT Farley × Makro</span>
-    <h1>The QA walkthrough<span class="em">.</span></h1>
-    <p class="sub">A tour of the store as it stands today: what we tested, what we found and fixed, and exactly what to click so your team can validate each feature and sign it off.</p>
+    <span class="eyebrow">Your new store · WT Farley × Makro</span>
+    <h1>How to QA your new store<span class="em">.</span></h1>
+    <p class="sub">A page-by-page guide for your team: what to open, what to click, and what to confirm on each part of the site. Work through it at your own pace, on a computer and on a phone.</p>
     <div class="meta-row">
       <div class="m"><span class="k">Date</span><span class="v">July 22, 2026</span></div>
-      <div class="m"><span class="k">Duration</span><span class="v">30 to 40 minutes</span></div>
       <div class="m"><span class="k">Store</span><span class="v">wt-farley.myshopify.com</span></div>
+      <div class="m"><span class="k">Time needed</span><span class="v">About an hour, once</span></div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 2 · Where the build stands -->
+<!-- SLIDE 2: How this works -->
 <div class="slide dark" data-slide="2">
-  <div class="s-inner" style="gap:24px;">
-    <span class="eyebrow">Where we are</span>
-    <h2 class="hdr">Everything a shopper can touch is live on the store.</h2>
-    <div class="status-table">
-      <div class="row">
-        <span class="topic">Data migration</span>
-        <span class="pill closed">Done</span>
-        <span class="note">827 products, 92 collections, 11,274 customers, 17,054 historical orders. Counts verified exactly.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Storefront build</span>
-        <span class="pill closed">Done</span>
-        <span class="note">Header, mega menu, search, collection pages, product pages, cart, content pages, forms.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Product configurator</span>
-        <span class="pill closed">Done</span>
-        <span class="note">31 configurable products live. 8 more built, held until content is confirmed.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Part-number lookup</span>
-        <span class="pill closed">Done</span>
-        <span class="note">Header lookup, on-page lookup, and deep links that prefill a configuration.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Store owner's guide</span>
-        <span class="pill closed">Done</span>
-        <span class="note">17-page guide to running the store, written for your team.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Launch tasks</span>
-        <span class="pill partial">Ahead</span>
-        <span class="note">Domain cutover, analytics confirmation, final redirect map, launch checklist.</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 3 · How we tested -->
-<div class="slide dark" data-slide="3">
   <div class="s-inner" style="gap:28px;">
-    <span class="eyebrow">QA method</span>
-    <h2 class="hdr">Three test passes, then everything re-checked this morning.</h2>
+    <span class="eyebrow">Before you start</span>
+    <h2 class="hdr">Three things to know.</h2>
     <div class="pillars">
       <div class="pillar">
-        <span class="num">01 · Engine and data</span>
-        <h3>Every option, against the old site</h3>
-        <p>All 40 configurable products compared to the legacy export: option groups, choices, part codes, and price add-ons exact to the cent. Over 1,500 choices validated.</p>
+        <span class="num">01 · The routine</span>
+        <h3>Open, click, confirm</h3>
+        <p>Each slide covers one part of the site: the page to open and a short list of checks. Do each check once on desktop, then repeat the marked ones on a phone.</p>
       </div>
       <div class="pillar">
-        <span class="num">02 · Storefront</span>
-        <h3>Every page type, crawled</h3>
-        <p>Key pages, all 92 collections, menus, images, redirects, search, and cart checked over HTTP. Every fetched page scanned for template errors.</p>
+        <span class="num">02 · Recording results</span>
+        <h3>Tick the shared sheet</h3>
+        <p>We shared a Validation Matrix spreadsheet with the same checks as this deck. Mark Desktop pass and Mobile pass per row, with your name.</p>
       </div>
       <div class="pillar">
-        <span class="num">03 · Hands on</span>
-        <h3>Every feature, clicked</h3>
-        <p>Manual passes on each feature as it was built and again after each fix, plus the responsive layout at the theme's tablet and mobile breakpoints.</p>
+        <span class="num">03 · If something looks off</span>
+        <h3>Use the Report Issue tab</h3>
+        <p>The orange tab on the right edge of the preview captures the page and your note in one click. We review submissions daily.</p>
       </div>
-    </div>
-    <div class="discuss">
-      <span class="k">Re-run today</span>
-      All 31 live configurators passed the automated re-check this morning: valid data, no empty required options, correct preview behavior, add to cart wired.
     </div>
   </div>
 </div>
 
-<!-- SLIDE 4 · Found and fixed -->
+<!-- SLIDE 3: Homepage -->
+<div class="slide dark" data-slide="3">
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 1 of 9 · Homepage</span>
+    <h2 class="hdr">Start at the front door.</h2>
+    <span class="page-tag">wt-farley.myshopify.com</span>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Scroll the whole page. Every section should have final imagery and copy, nothing that looks like placeholder content.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Click through the Shop by Category grid. Each of the 18 cards should open the matching category.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">Try the product sliders: arrows move them, and each card opens the right product.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Scroll down and back up. The header should stay with you the whole way.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Navigation -->
 <div class="slide dark" data-slide="4">
-  <div class="s-inner" style="gap:24px;">
-    <span class="eyebrow">Found and fixed</span>
-    <h2 class="hdr">QA caught real issues. All of them are fixed and re-verified.</h2>
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 2 of 9 · Menu and navigation</span>
+    <h2 class="hdr">Walk the menu like a customer would.</h2>
+    <span class="page-tag">Any page · top menu</span>
     <div class="wf">
-      <div class="step"><span class="n">01</span><span class="txt">Air Hose configurator was missing its three core options (length, inlet, outlet), so it could not build a valid part number.<span class="tag">fixed and live</span></span></div>
-      <div class="step"><span class="n">02</span><span class="txt">15-Foot Coiled Air Hose had a required option with zero visible choices, which could block ordering.<span class="tag">fixed</span></span></div>
-      <div class="step"><span class="n">03</span><span class="txt">MRI Vacuum Hose showed the outlet picker twice, risking an ambiguous part number.<span class="tag">fixed</span></span></div>
-      <div class="step"><span class="n">04</span><span class="txt">Old site URLs had no redirects; after launch, saved links would have hit 404 pages.<span class="tag">301s live</span></span></div>
-      <div class="step"><span class="n">05</span><span class="txt">Two internal test products were visible to shoppers at a $999,999 placeholder price.<span class="tag">removed</span></span></div>
-      <div class="step"><span class="n">06</span><span class="txt">34 migrated descriptions carried an old shipping notice with a wrong phone number, plus leftover Word markup.<span class="tag">cleaned</span></span></div>
-      <div class="step"><span class="n">07</span><span class="txt">Configurator pages showed the product photo and pre-picked options before the shopper chose anything.<span class="tag">reworked today, live</span></span></div>
-      <div class="step"><span class="n">08</span><span class="txt">Product cards downloaded full-screen images into card-size slots; desktop image transfer cut by half or better.<span class="tag">optimized today</span></span></div>
+      <div class="step"><span class="n">01</span><span class="txt">Open the main menu and hover each top item. The flyout should show the same structure you had on the old site.</span></div>
+      <div class="step hero"><span class="n">02</span><span class="txt">Spot-check 5 to 10 menu links across different sections. Each should land on the right category with products in it.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">Check the footer: social links, policy pages, and that every link goes somewhere real.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Type a nonsense address like <code>/pages/xyz</code>. You should get the styled page-not-found screen with a way back in.</span></div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 5 · Section: configurator -->
-<div class="slide dark section-cover" data-slide="5">
-  <div class="s-inner">
-    <span class="marker">Part one</span>
-    <h2>The configurator.</h2>
-    <p class="summary">The heart of the store: 31 products where a shopper builds a hose, regulator, manifold or stand option by option, and the part number, price and preview build with them. We will click through three products together.</p>
+<!-- SLIDE 5: Search and lookup -->
+<div class="slide dark" data-slide="5">
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 3 of 9 · Search and part-number lookup</span>
+    <h2 class="hdr">Search like a customer, then like a technician.</h2>
+    <span class="page-tag">Header search bar</span>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Type a word like "hose" or "regulator". Matching categories and products should appear as you type.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Press Enter. The full results page should show the grid with working filters.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">Switch to Lookup and enter a real part number from one of your old invoices. It should land on the right product with the options already selected.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Try a partial part number. It should fill what it can and ask you to complete the rest.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Try a made-up part number. You should get a clear message with your phone number for help.</span></div>
+    </div>
+    <div class="discuss"><span class="k">Good test data</span> Pull 3 to 5 part numbers from real past orders, ideally different product families: a hose, a regulator, a pigtail.</div>
   </div>
 </div>
 
-<!-- SLIDE 6 · Configurator walkthrough: oxygen hose -->
+<!-- SLIDE 6: Category pages -->
 <div class="slide dark" data-slide="6">
-  <div class="s-inner" style="gap:22px;">
-    <span class="eyebrow">Walkthrough 1 · Gas hose with layered preview</span>
-    <h2 class="hdr">Build an oxygen hose, watch the preview assemble itself.</h2>
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 4 of 9 · Category pages</span>
+    <h2 class="hdr">Browse a category end to end.</h2>
+    <span class="page-tag">/collections/hose-assemblies-for-medical-gas · or any category</span>
     <div class="wf">
-      <div class="step"><span class="n">01</span><span class="txt">Open <code>/products/oxygen-hose</code>. Options sit behind the gas choice; part number and price show a dash.</span></div>
-      <div class="step"><span class="n">02</span><span class="txt">Pick a gas type. The options reveal, and switching gas later swaps the whole product without a page reload.</span></div>
-      <div class="step hero"><span class="n">03</span><span class="txt">Pick a hose length, inlet and outlet. The part number assembles piece by piece and the price climbs with each add-on.</span></div>
-      <div class="step hero"><span class="n">04</span><span class="txt">Watch the image panel: the hose renders in layers, and the chosen fittings appear on the hose ends.</span></div>
-      <div class="step"><span class="n">05</span><span class="txt">Add to cart. Open the cart: every selection is listed on the line item, with the finished part number.</span></div>
-      <div class="step"><span class="n">06</span><span class="txt">Try adding with a required option missing: the page blocks it and scrolls you to the missing choice.</span></div>
+      <div class="step"><span class="n">01</span><span class="txt">Check the banner, category name and product count look right.</span></div>
+      <div class="step hero"><span class="n">02</span><span class="txt">Apply a filter, then a second one. The list should narrow correctly; clearing filters should bring everything back.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">Scroll to the bottom. More products should load automatically as you go.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Scan the cards: right photo, right title, right price. Flag any product that looks wrong to you as the catalog owner.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Repeat on one or two more categories you know well.</span></div>
     </div>
-    <div class="discuss"><span class="k">What to validate</span> The part number matches what your team would quote for the same build, and the price matches your list plus add-ons.</div>
   </div>
 </div>
 
-<!-- SLIDE 7 · New preview behavior -->
+<!-- SLIDE 7: Standard product pages -->
 <div class="slide dark" data-slide="7">
-  <div class="s-inner" style="gap:24px;">
-    <span class="eyebrow">Walkthrough 2 · New this week</span>
-    <h2 class="hdr">Products no longer show a finished photo before you choose.</h2>
-    <div class="before-after">
-      <div class="col before">
-        <div class="col-label">Before</div>
-        <h3>Photo and pre-picked options on load</h3>
-        <ul>
-          <li>The product photo showed immediately, even for a build-to-order product</li>
-          <li>Some options arrived pre-selected</li>
-          <li>Part number and price displayed before any choice was made</li>
-        </ul>
-      </div>
-      <div class="col after">
-        <div class="col-label">Now, live on the store</div>
-        <h3>Nothing until the shopper chooses</h3>
-        <ul>
-          <li>Grey panel with product-specific text, e.g. "Select a Flow Rate to Preview Your Regulator"</li>
-          <li>No option pre-selected; part number and price start blank</li>
-          <li>First pick reveals the product photo; Reset returns to the grey panel</li>
-        </ul>
-      </div>
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 5 of 9 · Product pages</span>
+    <h2 class="hdr">Check a few products you know by heart.</h2>
+    <span class="page-tag">Any regular (non-configurator) product</span>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Photos: main image, thumbnails, zoom. Description reads clean, no leftover formatting from the old site.</span></div>
+      <div class="step hero"><span class="n">02</span><span class="txt">Pick each size or option in the dropdown. Price and part number should follow your selection.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">Open the Documents and Specifications sections; download a document.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Scroll down: the add-to-cart bar should stay within reach.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Add to cart and confirm the right variant and price appear in the cart.</span></div>
     </div>
-    <div class="discuss"><span class="k">Try it</span> Open <code>/products/15-foot-coiled-air-hose</code>. Confirm the grey panel, pick an inlet, watch the photo and part number appear, then hit Reset Configurator.</div>
+    <div class="discuss"><span class="k">Good test data</span> Pick your 5 best sellers plus 2 products with many variants. You know what these should say better than anyone.</div>
   </div>
 </div>
 
-<!-- SLIDE 8 · Color coding -->
+<!-- SLIDE 8: Configurator hoses -->
 <div class="slide dark" data-slide="8">
-  <div class="s-inner" style="gap:22px;">
-    <span class="eyebrow">Walkthrough 3 · Click regulators</span>
-    <h2 class="hdr">Color Coding changes the picture to the color you picked.</h2>
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 6 of 9 · Configurator: gas hoses</span>
+    <h2 class="hdr">Build a hose, start to finish.</h2>
+    <span class="page-tag">/products/oxygen-hose</span>
     <div class="wf">
-      <div class="step"><span class="n">01</span><span class="txt">Open <code>/products/oxygen-standard-body-click-regulator</code>. Grey panel reads "Select a Flow Rate to Preview Your Regulator".</span></div>
-      <div class="step"><span class="n">02</span><span class="txt">Pick a flow rate. The regulator photo appears and the part number starts building.</span></div>
-      <div class="step hero"><span class="n">03</span><span class="txt">Open Color Coding and pick Green, then Blue, then Red. The photo swaps to the matching color each time.</span></div>
-      <div class="step"><span class="n">04</span><span class="txt">Finish the remaining options and confirm the finished part number matches your catalog for that build.</span></div>
+      <div class="step"><span class="n">01</span><span class="txt">On arrival: options wait behind the gas choice, and part number and price show a dash.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Pick a gas type. The options appear. Switch gas and confirm the page follows without reloading.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">Choose length, inlet and outlet. Watch the part number assemble and the price climb, and check both against your catalog for that exact build.</span></div>
+      <div class="step hero"><span class="n">04</span><span class="txt">Watch the preview: the chosen fittings should appear on the ends of the hose.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Try adding to cart with an option missing. It should stop you and point at what is missing.</span></div>
+      <div class="step"><span class="n">06</span><span class="txt">Complete the build and add to cart. The cart line should list the part number and every choice you made.</span></div>
     </div>
-    <div class="discuss"><span class="k">Same behavior</span> All four click regulators carry the color swap. Wall outlet manifolds show their gas artwork uncropped on the gas tiles, fixed this morning after your note.</div>
+    <div class="discuss"><span class="k">Repeat on</span> One or two more hoses (vacuum, nitrogen) and one MRI hose, using builds you sell often.</div>
   </div>
 </div>
 
-<!-- SLIDE 9 · Lookup -->
+<!-- SLIDE 9: Configurator regulators -->
 <div class="slide dark" data-slide="9">
-  <div class="s-inner" style="gap:22px;">
-    <span class="eyebrow">Part two · Part-number lookup</span>
-    <h2 class="hdr">A customer with a part number gets a ready-to-buy page.</h2>
-    <div class="flow-two">
-      <div class="entry-pair">
-        <div class="entry">
-          <span class="e-num">Path A · Header</span>
-          <p>Switch the header search to Lookup and enter a part number from an old invoice.</p>
-        </div>
-        <div class="entry">
-          <span class="e-num">Path B · Product page</span>
-          <p>Use the "Have a part number?" bar at the top of any configurator page.</p>
-        </div>
-      </div>
-      <div class="merge-arrow">↓</div>
-      <div class="merge-step"><p><strong>Both land on the right product with the configuration prefilled.</strong> A full part number fills every option; a partial one fills what it can and asks the shopper to complete the rest.</p></div>
-      <div class="merge-arrow">↓</div>
-      <div class="merge-step subdued"><p>Entering a part number on the wrong product page routes to the right product automatically.</p></div>
-    </div>
-    <div class="discuss"><span class="k">Two notes</span> Legacy composite part numbers resolve through suggestions rather than an exact match, because they never existed as single SKUs. And as of today, typing a part number into the regular search switches to Lookup automatically, so shoppers cannot land on an empty search page.</div>
-  </div>
-</div>
-
-<!-- SLIDE 10 · Storefront tour -->
-<div class="slide light" data-slide="10">
-  <div class="s-inner" style="gap:32px;">
-    <span class="eyebrow">Part three · The storefront</span>
-    <h2 class="hdr">Eight areas to click through on the tour.</h2>
-    <div class="feat-grid">
-      <div class="cluster">
-        <span class="num">01 · Header</span>
-        <h3>Navigation</h3>
-        <ul><li>Sticky header and menu</li><li>Mega menu mirrors the old site structure</li><li>Cart count updates live</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">02 · Search</span>
-        <h3>Quick search</h3>
-        <ul><li>Categories and products as you type</li><li>Lookup toggle for part numbers</li><li>Full results page with filters</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">03 · Collections</span>
-        <h3>Category pages</h3>
-        <ul><li>Banner, sticky filters and toolbar</li><li>More products load as you scroll</li><li>18-card category grid on home</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">04 · Product pages</span>
-        <h3>Standard products</h3>
-        <ul><li>Gallery, documents, specifications</li><li>Pill-style option dropdowns</li><li>Sticky add-to-cart bar</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">05 · Cart</span>
-        <h3>Mini cart</h3>
-        <ul><li>Slide-out with quantities</li><li>Configurator selections on line items</li><li>Straight into checkout</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">06 · Content</span>
-        <h3>Pages</h3>
-        <ul><li>About, FAQ, Terms</li><li>Customer testimonials (20 quotes)</li><li>Contact form</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">07 · Dealers</span>
-        <h3>Dealer application</h3>
-        <ul><li>Full application form</li><li>Same fields as the old site's form</li><li>Submissions land in Shopify</li></ul>
-      </div>
-      <div class="cluster">
-        <span class="num">08 · Trust</span>
-        <h3>Policies and consent</h3>
-        <ul><li>Refund and legal pages</li><li>Cookie consent banner</li><li>Old links redirect to new pages</li></ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SLIDE 11 · Mobile -->
-<div class="slide dark" data-slide="11">
-  <div class="s-inner" style="gap:22px;">
-    <span class="eyebrow">Part four · On a phone</span>
-    <h2 class="hdr">The same checks, one hand, smaller screen.</h2>
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 7 of 9 · Configurator: regulators and more</span>
+    <h2 class="hdr">Then build a regulator.</h2>
+    <span class="page-tag">/products/oxygen-standard-body-click-regulator · /products/15-foot-coiled-air-hose</span>
     <div class="wf">
-      <div class="step"><span class="n">01</span><span class="txt">Open any configurator product. The layout stacks: preview panel on top, options below, and the grey panel and photo reveal behave the same.</span></div>
-      <div class="step"><span class="n">02</span><span class="txt">Gas tiles wrap to three per row and stay aligned.</span></div>
-      <div class="step"><span class="n">03</span><span class="txt">On a collection page, filters and the toolbar stay reachable while scrolling, and more products keep loading.</span></div>
-      <div class="step"><span class="n">04</span><span class="txt">On a standard product, the sticky add-to-cart bar stays at hand as you scroll the page.</span></div>
-      <div class="step"><span class="n">05</span><span class="txt">Menu, quick search and Lookup all work from the mobile header.</span></div>
+      <div class="step"><span class="n">01</span><span class="txt">On arrival the preview panel shows a prompt instead of a photo, and nothing is chosen for you.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Pick the first option. The product photo appears and the part number starts.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">On the click regulator, open Color Coding and click through the colors. The photo should change to the color you picked.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Hit Reset Configurator. Everything returns to the start.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Finish a build and confirm part number and price against your catalog.</span></div>
     </div>
-    <div class="discuss"><span class="k">Ask</span> We would like at least one pass from your team on an iPhone and one on Android as part of sign-off; the validation matrix in the QA report lists the exact rows.</div>
+    <div class="discuss"><span class="k">Repeat on</span> The manifolds, the vacuum regulators, the pigtails and the flowmeter system, with a build you know for each.</div>
   </div>
 </div>
 
-<!-- SLIDE 12 · Open items -->
-<div class="slide dark" data-slide="12">
-  <div class="s-inner" style="gap:24px;">
-    <span class="eyebrow">Open items</span>
-    <h2 class="hdr">What is still open, and who holds the ball.</h2>
-    <div class="status-table">
-      <div class="row">
-        <span class="topic">Analytics (GA4)</span>
-        <span class="pill closed">Resolved</span>
-        <span class="note">Runs through Shopify's Google and YouTube channel; no separate tag needed on the storefront.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Reviews app</span>
-        <span class="pill partial">Your call</span>
-        <span class="note">Judge.me is installed; the original plan named Yotpo. Confirm the choice and where reviews show.</span>
-      </div>
-      <div class="row">
-        <span class="topic">8 unpublished configurators</span>
-        <span class="pill partial">Your call</span>
-        <span class="note">IV poles, equipment stands, nebbulator, coiled oxygen hose: built and ready, waiting on content confirmation.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Product content</span>
-        <span class="pill partial">Your call</span>
-        <span class="note">24 products need descriptions after the legacy-notice cleanup; 2 products have no photo.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Duplicate SKUs</span>
-        <span class="pill partial">Your call</span>
-        <span class="note">30 SKUs shared across products (brand cross-listings and one price conflict). Keep-or-merge call per case.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Redirect map extension</span>
-        <span class="pill closed">Done today</span>
-        <span class="note">834 redirects for the old .html URLs imported and verified live; old product and category links now land on the right pages.</span>
-      </div>
-      <div class="row">
-        <span class="topic">Lookup polish</span>
-        <span class="pill closed">Done today</span>
-        <span class="note">Part-number searches now route to Lookup automatically; sample part numbers removed from the markup.</span>
-      </div>
+<!-- SLIDE 10: Cart -->
+<div class="slide dark" data-slide="10">
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 8 of 9 · Cart and checkout</span>
+    <h2 class="hdr">Take an order to the doorstep of checkout.</h2>
+    <span class="page-tag">Cart icon · top right</span>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">With a few items in the cart, open it: photos, names, prices and the subtotal should be right.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Change a quantity and remove an item. Totals should update instantly.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">Check a configured product's cart line: part number and all chosen options listed.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Continue to checkout. Items and totals carry over, and shipping options appear for your address.</span></div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 13 · Closing -->
-<div class="slide dark closing" data-slide="13">
+<!-- SLIDE 11: Content pages -->
+<div class="slide dark" data-slide="11">
+  <div class="s-inner" style="gap:20px;">
+    <span class="eyebrow">Page 9 of 9 · Content pages and forms</span>
+    <h2 class="hdr">Read your own pages.</h2>
+    <span class="page-tag">/pages/about-us · /pages/faq · /pages/contact · /pages/become-a-wt-farley-dealer · /pages/customer-testimonials</span>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">About Us and FAQ: read the copy as the owner. Wording, claims and contact details are yours to sign off.</span></div>
+      <div class="step hero"><span class="n">02</span><span class="txt">Send a test message through the contact form and a test dealer application, and confirm both arrive on your side.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">Testimonials: 20 quotes, names and companies spelled right.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Policy pages: shipping, returns, terms all say what you expect.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 12: Phone + closing -->
+<div class="slide dark closing" data-slide="12">
   <div class="s-inner">
-    <span class="eyebrow">From here</span>
-    <h2>Your turn to break it<span class="em">.</span></h2>
+    <span class="eyebrow">One more pass · then you are done</span>
+    <h2>Now do the highlights on a phone<span class="em">.</span></h2>
     <div class="outcomes">
-      <div class="o"><span class="n">01</span><span class="txt">Walk the validation matrix in the QA report: one desktop browser and one phone per row, checking part numbers and prices against your catalog.</span></div>
-      <div class="o"><span class="n">02</span><span class="txt">Anything off: use the Report Issue tab on the right edge of the preview, or drop it in our shared thread. We triage daily.</span></div>
-      <div class="o"><span class="n">03</span><span class="txt">Send the open decisions back (reviews app, unpublished products, duplicate SKUs) so we can close them out.</span></div>
-      <div class="o"><span class="n">04</span><span class="txt">We close the launch items on our side: analytics, redirect map, lookup polish, then the launch checklist.</span></div>
+      <div class="o"><span class="n">01</span><span class="txt">On a phone, repeat: one configurator build, one search, one category browse, one add to cart. Everything should be usable with one thumb.</span></div>
+      <div class="o"><span class="n">02</span><span class="txt">Mark each row in the shared Validation Matrix as you go: Desktop pass, Mobile pass, your name.</span></div>
+      <div class="o"><span class="n">03</span><span class="txt">Anything that looks off, send it through the Report Issue tab on the right edge of the page.</span></div>
+      <div class="o"><span class="n">04</span><span class="txt">When the sheet is green, we lock the launch checklist together.</span></div>
     </div>
-    <p class="next">Target: your validation pass within the week, then we lock the launch checklist together.</p>
+    <p class="next">Questions while testing? Message us any time. We would rather hear about it twice than not at all.</p>
   </div>
 </div>
 
@@ -452,7 +285,6 @@ body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh
 const slides = document.querySelectorAll('.slide');
 const total = slides.length;
 let current = 0;
-
 function goTo(idx) {
   if (idx < 0 || idx >= total) return;
   slides[current].classList.remove('active');
@@ -460,34 +292,22 @@ function goTo(idx) {
   slides[current].classList.add('active');
   document.getElementById('slideNum').textContent =
     String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
-  document.getElementById('progressFill').style.width =
-    ((current + 1) / total * 100) + '%';
+  document.getElementById('progressFill').style.width = ((current + 1) / total * 100) + '%';
 }
-
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
-  if (e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
-  if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
 });
-
 document.addEventListener('click', (e) => {
   if (e.target.closest('a')) return;
-  const x = e.clientX;
-  if (x > window.innerWidth * 0.5) goTo(current + 1);
-  else goTo(current - 1);
+  if (e.clientX > window.innerWidth * 0.5) goTo(current + 1); else goTo(current - 1);
 });
-
 let touchStartX = 0;
 document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
 document.addEventListener('touchend', (e) => {
   const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) {
-    if (dx < 0) goTo(current + 1);
-    else goTo(current - 1);
-  }
+  if (Math.abs(dx) > 50) { if (dx < 0) goTo(current + 1); else goTo(current - 1); }
 });
-
 document.getElementById('slideNum').textContent = '01 / ' + String(total).padStart(2, '0');
 document.getElementById('progressFill').style.width = (1 / total * 100) + '%';
 </script>
