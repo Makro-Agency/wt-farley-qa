@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#9989;</text></svg>">
+<title>WT Farley · QA Report · 22 Jul 2026</title>
+<style>
+  :root {
+    --green: 6 155 0; --green-deep: 4 120 0; --ink: 31 42 31; --ink-soft: 74 88 74;
+    --paper: 255 255 255; --panel: 247 249 247; --line: 210 212 210;
+    --amber: 176 104 0; --amber-bg: 255 247 232;
+    --red: 178 34 34; --red-bg: 253 240 240;
+    --blue: 30 90 160; --blue-bg: 238 244 251;
+    --radius: 12px; --maxw: 1080px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --green: 74 210 66; --green-deep: 120 225 112; --ink: 226 232 226; --ink-soft: 165 178 165;
+      --paper: 18 22 18; --panel: 28 34 28; --line: 52 62 52;
+      --amber: 240 196 120; --amber-bg: 42 34 18; --red: 235 120 120; --red-bg: 44 24 24;
+      --blue: 130 175 235; --blue-bg: 22 30 42; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); color: rgb(var(--ink)); background: rgb(var(--paper)); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  header.hero { border-bottom: 1px solid rgb(var(--line)); background: linear-gradient(180deg, rgb(var(--panel)), rgb(var(--paper))); }
+  .hero__inner { padding: 44px 0 36px; }
+  .eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgb(var(--green)); padding: 5px 12px; border: 1px solid rgb(var(--green) / .4); border-radius: 100px; margin-bottom: 16px; }
+  h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .lede { font-size: 17px; color: rgb(var(--ink-soft)); max-width: 72ch; margin: 0; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .chip { font-size: 13px; background: rgb(var(--paper)); border: 1px solid rgb(var(--line)); border-radius: 100px; padding: 6px 14px; color: rgb(var(--ink-soft)); }
+  .chip strong { color: rgb(var(--ink)); font-weight: 650; }
+  main { padding: 36px 0 90px; }
+  h2 { font-size: 22px; margin: 46px 0 8px; letter-spacing: -0.3px; }
+  h2:first-of-type { margin-top: 0; }
+  h3 { font-size: 16px; margin: 26px 0 8px; }
+  p.body { color: rgb(var(--ink-soft)); font-size: 15px; max-width: 78ch; margin: 0 0 14px; }
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 20px 0 8px; }
+  .stat { background: rgb(var(--panel)); border: 1px solid rgb(var(--line)); border-radius: var(--radius); padding: 16px 18px; }
+  .stat .v { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; color: rgb(var(--green-deep)); }
+  .stat .k { font-size: 12.5px; color: rgb(var(--ink-soft)); margin-top: 2px; line-height: 1.4; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: rgb(var(--paper)); border: 1px solid rgb(var(--line)); border-radius: var(--radius); overflow: hidden; margin: 12px 0; }
+  thead th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgb(var(--ink-soft)); background: rgb(var(--panel)); padding: 10px 14px; border-bottom: 1px solid rgb(var(--line)); }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid rgb(var(--line) / .55); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; border-radius: 100px; padding: 3px 10px; white-space: nowrap; }
+  .p-pass { background: rgb(var(--green) / .14); color: rgb(var(--green-deep)); }
+  .p-fixed { background: rgb(var(--green) / .22); color: rgb(var(--green-deep)); outline: 1px solid rgb(var(--green) / .5); }
+  .p-open { background: rgb(var(--amber-bg)); color: rgb(var(--amber)); }
+  .p-client { background: rgb(var(--blue-bg)); color: rgb(var(--blue)); }
+  .note { color: rgb(var(--ink-soft)); }
+  code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: rgb(var(--green-deep)); }
+  .callout { border: 1px solid rgb(var(--line)); border-left: 4px solid rgb(var(--green)); background: rgb(var(--panel)); border-radius: 8px; padding: 14px 18px; font-size: 14.5px; margin: 18px 0; }
+  ul.plain { margin: 8px 0; padding-left: 20px; font-size: 14.5px; color: rgb(var(--ink-soft)); }
+  ul.plain li { margin: 4px 0; }
+  footer { border-top: 1px solid rgb(var(--line)); padding: 18px 0 40px; color: rgb(var(--ink-soft)); font-size: 13px; }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><div class="hero__inner">
+  <span class="eyebrow">Quality Assurance Report</span>
+  <h1>WT Farley Shopify Store: QA Report</h1>
+  <p class="lede">What we tested, how we tested it, the issues we found and fixed, and the items that remain open. Covers the storefront build, the product configurator, part-number lookup, migrated data, and performance.</p>
+  <div class="meta-row">
+    <span class="chip">Report date <strong>22 July 2026</strong></span>
+    <span class="chip">Store <strong>wt-farley.myshopify.com</strong></span>
+    <span class="chip">QA window <strong>10 to 22 July 2026</strong></span>
+    <span class="chip">Prepared by <strong>Makro</strong></span>
+  </div>
+</div></div></header>
+<div class="wrap"><main>
+
+<h2>1. Summary</h2>
+<div class="stat-row">
+  <div class="stat"><div class="v">31 / 31</div><div class="k">live configurator products pass every automated check</div></div>
+  <div class="stat"><div class="v">1,500+</div><div class="k">option choices validated against legacy data, price add-ons exact to the cent</div></div>
+  <div class="stat"><div class="v">17,054</div><div class="k">historical orders migrated and verified by count</div></div>
+  <div class="stat"><div class="v">11</div><div class="k">issues found by QA and fixed during the window</div></div>
+  <div class="stat"><div class="v">10 / 10</div><div class="k">key pages load clean, no template errors</div></div>
+</div>
+<p class="body">QA ran in three passes: a storefront functional pass and data integrity pass (10 to 13 July), a deep configurator audit that compared every option group and price against the legacy Shift4Shop export (11 to 12 July), and a full automated re-verification on 22 July after the latest configurator work went live. Every issue in section 4 was found by these passes and has been re-tested as fixed on the live theme.</p>
+
+<h2>2. How we tested</h2>
+<table><thead><tr><th>Layer</th><th>Method</th><th>Coverage</th></tr></thead><tbody>
+<tr><td><strong>Configurator engine</strong></td><td class="note">Automated crawl of every configurator product page: parse the engine data, validate structure (groups, choices, part codes, price add-ons, required flags), check the preview placeholder, pre-selection state, and add-to-cart wiring.</td><td class="note">31 live products, every option group and choice, re-run 22 Jul.</td></tr>
+<tr><td><strong>Configurator data</strong></td><td class="note">Programmatic comparison of store option data against the legacy site export: group sets, choice sets, part codes, price deltas (cents-exact), defaults, hidden flags, base prices.</td><td class="note">40 legacy configurable products, ~177 option groups.</td></tr>
+<tr><td><strong>Storefront</strong></td><td class="note">HTTP checks on key pages, menu link integrity, collection pages, product pages, images, search, redirects, cart add. Template error scanning on every fetched page.</td><td class="note">Key pages, 91 collections, menu URLs, redirect samples.</td></tr>
+<tr><td><strong>Migrated data</strong></td><td class="note">Admin-side integrity audit: counts, duplicate SKUs, missing images, price anomalies, leftover test records.</td><td class="note">760 active products, 4,286 variants, 92 collections, customers, orders.</td></tr>
+<tr><td><strong>Interactive behavior</strong></td><td class="note">Manual browser passes on each feature as it was built and after each fix (Chrome on macOS), plus markup-level responsive verification at the theme's tablet and mobile breakpoints.</td><td class="note">Configurator flows, lookup flows, search, cart, navigation.</td></tr>
+</tbody></table>
+<div class="callout"><strong>A note on browsers and devices.</strong> Automated checks validate the same HTML every browser receives, and the theme's responsive behavior is defined at two breakpoints (990px and 600px) that we verify directly. Manual passes ran on Chrome desktop. Section 7 is a short validation matrix we recommend WT Farley walks through on Safari, iPhone and Android as part of sign-off; the demo deck shows exactly what to check on each page.</div>
+
+<h2>3. What passed</h2>
+<h3>Configurator (31 live products)</h3>
+<ul class="plain">
+  <li>Engine data valid on every product; no template errors on any page.</li>
+  <li>No required option group renders empty; no duplicate part-number positions; part codes present on every orderable choice.</li>
+  <li>Part number and price assemble correctly as options are picked; both stay blank until the shopper makes a first selection.</li>
+  <li>Preview panel behavior (new, 22 Jul): grey placeholder on load with product-specific text, nothing pre-selected, main image appears after the first pick, Color Coding selections swap the image on all 4 click regulators, and the layered hose preview is live on all 9 gas hoses.</li>
+  <li>Gas-type switcher swaps sibling products without a page reload; add to cart carries the full selection as line-item properties; incomplete builds are blocked with a nudge to the missing option.</li>
+</ul>
+<h3>Part-number lookup</h3>
+<ul class="plain">
+  <li>Lookup API live and healthy; a legacy part number (OH-036) resolves and returns the right product suggestions.</li>
+  <li>Full part numbers prefill the whole configuration; partial part numbers prefill what matches and prompt for the rest.</li>
+  <li>Cross-product handoff works: entering a part number on the wrong product routes to the right one.</li>
+</ul>
+<h3>Storefront and data</h3>
+<ul class="plain">
+  <li>Key pages all load clean: home, collections, search, cart, contact, about, FAQ, dealer application, testimonials, policies.</li>
+  <li>Legacy URL redirects return 301 (see fixed issue #4). No empty collections. Free-text search healthy.</li>
+  <li>Migration counts verified exactly: 17,054 orders, 11,274 customers, 92 collections, 760 active products.</li>
+</ul>
+
+<h2>4. Issues found and fixed</h2>
+<p class="body">These were found by our QA passes, fixed by the team, and re-verified on the live store on 22 July.</p>
+<table><thead><tr><th style="width:44%">Issue</th><th>Found</th><th>Status</th><th>Verification</th></tr></thead><tbody>
+<tr><td><strong>Air Hose configurator missing its three core option groups</strong> (hose length, inlet, outlet were in draft status behind the scenes), so a valid part number could not be built.</td><td class="note">12 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">All 6 groups live with full choice lists.</td></tr>
+<tr><td><strong>15-Foot Coiled Air Hose: a required option had zero visible choices</strong> (all four were flagged hidden), which could block ordering.</td><td class="note">12 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Group renders with its choices.</td></tr>
+<tr><td><strong>MRI Conditional Vacuum Hose showed the outlet picker twice</strong>, risking an ambiguous part number.</td><td class="note">12 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Single outlet group, positions unique.</td></tr>
+<tr><td><strong>Legacy site URLs had no redirects</strong>: old links and search results would have landed on 404s after launch.</td><td class="note">10 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Sampled legacy paths now return 301 to the right pages. One older URL pattern still being extended (see open items).</td></tr>
+<tr><td><strong>Two internal test products were live on the storefront</strong> at a $999,999 placeholder price.</td><td class="note">12 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Both return 404 on the storefront.</td></tr>
+<tr><td><strong>34 migrated product descriptions carried a legacy shipping notice with an out-of-date phone number</strong>, plus leftover Word markup from the old site.</td><td class="note">21 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Notice and markup removed across all 827 product descriptions.</td></tr>
+<tr><td><strong>Configurator pages showed the product photo and pre-selected options on load</strong>, before the shopper chose anything.</td><td class="note">22 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Placeholder until first pick, nothing pre-selected, part number and price start blank. Layered hose products keep their existing behavior.</td></tr>
+<tr><td><strong>Gas-type tiles misaligned on manifold products</strong>: banner artwork was cropped and tiles sat at different heights.</td><td class="note">22 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Tiles top-aligned; wide artwork shows uncropped; hose tiles unchanged.</td></tr>
+<tr><td><strong>Preview placeholder text read awkwardly on some products</strong> ("Select a Choose Length..."), caught by the same-day automated re-check.</td><td class="note">22 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Copy reads correctly on all 22 placeholder products.</td></tr>
+<tr><td><strong>Product card images downloaded far larger than displayed on desktop</strong> (full-screen renditions for card-size slots) on collection pages, search and homepage sliders.</td><td class="note">22 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">Browsers now pick card-size renditions: 50 to 70% less image transfer per card (sample: 52KB to 24KB or less).</td></tr>
+<tr><td><strong>Placeholder links in the footer</strong> (COA Finder, Catalog, Locations) went nowhere.</td><td class="note">10 Jul</td><td><span class="pill p-fixed">Fixed</span></td><td class="note">No dead placeholder links render in the footer.</td></tr>
+</tbody></table>
+
+<h2>5. Open items</h2>
+<table><thead><tr><th style="width:44%">Item</th><th>Owner</th><th>Status</th><th>Note</th></tr></thead><tbody>
+<tr><td>GA4 / GTM analytics confirmation: no tag detected on the storefront.</td><td class="note">Makro + WT Farley</td><td><span class="pill p-open">Open</span></td><td class="note">If analytics runs through the Shopify Google channel this may already be covered; we will confirm and close either way before launch.</td></tr>
+<tr><td>Reviews app: Judge.me is installed; the original scope named Yotpo.</td><td class="note">WT Farley decision</td><td><span class="pill p-client">Decision</span></td><td class="note">Confirm the app choice and where review widgets should appear.</td></tr>
+<tr><td>Part numbers typed into regular search return no results; the Lookup mode is the designed path.</td><td class="note">Makro</td><td><span class="pill p-open">Open</span></td><td class="note">Working as designed, but we recommend routing part-number-shaped queries to Lookup automatically. Included in training either way.</td></tr>
+<tr><td>Sample test part numbers still appear in the header lookup suggestion markup.</td><td class="note">Makro</td><td><span class="pill p-open">Open</span></td><td class="note">Cleanup scheduled; cosmetic, does not affect real lookups.</td></tr>
+<tr><td>8 configurator products built but held unpublished (IV poles, equipment stands, nebbulator, coiled oxygen hose).</td><td class="note">WT Farley decision</td><td><span class="pill p-client">Decision</span></td><td class="note">Ready to publish once content and data are confirmed.</td></tr>
+<tr><td>24 products have empty descriptions after legacy-notice cleanup; 2 active products have no image.</td><td class="note">WT Farley content</td><td><span class="pill p-client">Content</span></td><td class="note">List available on request.</td></tr>
+<tr><td>30 SKUs are shared across multiple products (brand cross-listings, one near-duplicate product pair, one SKU on two products at different prices).</td><td class="note">WT Farley decision</td><td><span class="pill p-client">Decision</span></td><td class="note">Needs a keep-or-merge call per case; affects lookup exactness.</td></tr>
+<tr><td>Older legacy URL pattern (category pages ending in <code>.html</code>) not yet covered by the redirect map.</td><td class="note">Makro</td><td><span class="pill p-open">Open</span></td><td class="note">Redirect map extension before launch.</td></tr>
+<tr><td>Utility page <code>page-template</code> is published and visible to search engines.</td><td class="note">Makro</td><td><span class="pill p-open">Open</span></td><td class="note">Will unpublish.</td></tr>
+<tr><td>Domain cutover (site currently on the myshopify.com preview address).</td><td class="note">Launch task</td><td><span class="pill p-open">Open</span></td><td class="note">Scheduled as part of the launch plan.</td></tr>
+</tbody></table>
+
+<h2>6. Performance</h2>
+<p class="body">Measured on 22 July over the public storefront, using compressed transfer sizes (what a real browser downloads).</p>
+<table><thead><tr><th>Measure</th><th>Result</th><th>Reading</th></tr></thead><tbody>
+<tr><td>Homepage HTML (compressed)</td><td><strong>74KB</strong></td><td class="note">Healthy. The page is markup-heavy but compresses well.</td></tr>
+<tr><td>Product page HTML (compressed)</td><td><strong>49 to 54KB</strong></td><td class="note">Healthy, including the configurator engine data.</td></tr>
+<tr><td>Product card images on desktop</td><td><strong>50 to 70% smaller after fix</strong></td><td class="note">Cards previously downloaded full-screen renditions; browsers now pick card-size ones (sample image: 52KB before, 14 to 24KB after). Collection pages and homepage sliders benefit on every card.</td></tr>
+<tr><td>Third-party scripts</td><td><strong>~110KB platform baseline</strong></td><td class="note">Shopify checkout wallets and analytics loader, standard on every Shopify store, plus the consent, reviews and email apps. Nothing anomalous.</td></tr>
+</tbody></table>
+<p class="body">All performance changes were delivery hints only: no feature, layout or visual behavior was touched, and the configurator, layered previews and galleries were re-verified after the change. One recommendation for WT Farley: a few homepage images are very large PNG source files (largest 1.14MB); modern browsers receive an optimized version automatically, but replacing the heaviest source files with compressed exports would benefit older browsers.</p>
+
+<h2>7. Recommended validation matrix for sign-off</h2>
+<p class="body">The demo deck walks through each of these with exact steps. We suggest each row gets a pass on at least one desktop browser and one phone.</p>
+<table><thead><tr><th>Feature</th><th>Where</th><th>What to confirm</th></tr></thead><tbody>
+<tr><td>Configurator: build a hose</td><td class="note"><code>/products/oxygen-hose</code></td><td class="note">Pick a gas, options reveal, part number and price build up, layered preview updates, add to cart carries the selections.</td></tr>
+<tr><td>Configurator: placeholder and image reveal</td><td class="note"><code>/products/15-foot-coiled-air-hose</code></td><td class="note">Grey placeholder on load, nothing pre-selected, product photo appears on first pick, Reset returns to the placeholder.</td></tr>
+<tr><td>Configurator: Color Coding</td><td class="note"><code>/products/oxygen-standard-body-click-regulator</code></td><td class="note">Choosing a color swaps the preview image to that color.</td></tr>
+<tr><td>Part-number lookup</td><td class="note">Header search, Lookup toggle</td><td class="note">A real part number lands on the right product with options prefilled.</td></tr>
+<tr><td>Search and filters</td><td class="note">Header search, any collection</td><td class="note">Quick search shows categories and products; filters stick while scrolling; infinite scroll loads more.</td></tr>
+<tr><td>Cart and checkout entry</td><td class="note">Any product</td><td class="note">Sticky add-to-cart bar, mini cart contents, configurator selections listed on the line item.</td></tr>
+<tr><td>Content pages</td><td class="note">About, FAQ, Contact, Dealer, Testimonials</td><td class="note">Copy, forms submit, dealer form fields match the old site's application.</td></tr>
+<tr><td>Mobile pass</td><td class="note">Phone, any of the above</td><td class="note">Configurator stacks with the preview on top; menus, filters and sticky bars usable.</td></tr>
+</tbody></table>
+
+<footer>Prepared by Makro · 22 July 2026 · QA sources: storefront functional pass (10 to 13 Jul), configurator data audit (11 to 12 Jul), data integrity audit (12 Jul), automated re-verification of all findings (22 Jul).</footer>
+</main></div>
+</body>
+</html>

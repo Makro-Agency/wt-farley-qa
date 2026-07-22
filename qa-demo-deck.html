@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WT Farley × Makro · QA Walkthrough</title>
+<style>
+:root {
+  --bg: #131210; --bg-elevated: #1c1a17; --bg-overlay: #1a1815;
+  --light: #F5F2ED; --light-alt: #FFFFFF;
+  --text: #FFFFFF; --text-90: rgba(255,255,255,0.90); --text-70: rgba(255,255,255,0.70); --text-50: rgba(255,255,255,0.50); --text-30: rgba(255,255,255,0.30);
+  --light-elevated: #FFFFFF; --light-overlay: #FAF7F1;
+  --text-dark: #131210; --text-dark-70: rgba(19,18,16,0.70); --text-dark-50: rgba(19,18,16,0.50); --text-dark-30: rgba(19,18,16,0.30);
+  --line: rgba(255,255,255,0.08); --line-strong: rgba(255,255,255,0.15); --line-subtle: rgba(255,255,255,0.04);
+  --line-dark: rgba(19,18,16,0.10); --line-dark-strong: rgba(19,18,16,0.18); --line-dark-subtle: rgba(19,18,16,0.06);
+  --red: #E53935; --green: #4CAF50; --amber: #D97706;
+  --font: 'PP Neue Montreal', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Inter', sans-serif;
+  --t-hero: clamp(2.5rem, 5.5vw, 4.375rem);
+  --t-display: clamp(2rem, 4vw, 3rem);
+  --t-h2: clamp(1.5rem, 2.5vw, 2rem);
+  --t-h3: 1.25rem; --t-h4: 1.125rem;
+  --t-body-lg: 1.0625rem; --t-body: 1rem; --t-sm: 0.875rem; --t-xs: 0.75rem; --t-label: 0.6875rem;
+  --tr-hero: -0.04em; --tr-display: -0.03em; --tr-h3: -0.015em; --tr-body: -0.011em; --tr-label: 0.06em;
+  --lh-body: 1.55;
+  --r-sm: 3px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow: hidden; height: 100vh; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--font); font-size: var(--t-body); line-height: var(--lh-body); letter-spacing: var(--tr-body); color: var(--text); background: var(--bg); }
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 100; background: var(--line); }
+.progress .fill { height: 100%; background: var(--text); width: 0%; transition: width 400ms var(--ease-out); }
+.slide-num { position: fixed; bottom: 32px; right: 40px; font-size: var(--t-label); letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); z-index: 100; font-variant-numeric: tabular-nums; mix-blend-mode: difference; }
+.nav-hint { position: fixed; bottom: 32px; left: 40px; font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-30); z-index: 100; mix-blend-mode: difference; }
+.logo-fixed { position: fixed; top: 28px; left: 40px; font-size: 16px; font-weight: 500; letter-spacing: var(--tr-display); z-index: 100; color: var(--text); mix-blend-mode: difference; }
+.logo-fixed .dot { color: var(--red); }
+.logo-fixed .client { color: var(--text-50); font-weight: 400; margin-left: 8px; }
+.slide { position: fixed; inset: 0; width: 100vw; height: 100vh; display: flex; opacity: 0; pointer-events: none; transition: opacity 500ms var(--ease-out), transform 500ms var(--ease-out); transform: translateY(20px); overflow: hidden; }
+.slide.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.slide.dark { background: var(--bg); color: var(--text); }
+.slide.light { background: var(--light); color: var(--text-dark); }
+.s-inner { width: 100%; max-width: 1200px; margin: 0 auto; padding: 60px 64px; display: flex; flex-direction: column; justify-content: center; }
+.eyebrow { font-size: var(--t-label); letter-spacing: var(--tr-label); text-transform: uppercase; margin-bottom: 24px; }
+.dark .eyebrow { color: var(--text-50); }
+.light .eyebrow { color: var(--text-dark-50); }
+.em { font-weight: 400; font-style: normal; }
+.dark .em { color: var(--text-50); }
+.light .em { color: var(--text-dark-50); }
+.hdr { font-size: clamp(1.75rem, 3vw, 2.5rem); font-weight: 400; letter-spacing: var(--tr-display); line-height: 1.15; max-width: 34ch; }
+.light .hdr { color: var(--text-dark); }
+.cover .s-inner { gap: 24px; }
+.cover h1 { font-size: clamp(3rem, 7vw, 6rem); line-height: 0.9; letter-spacing: var(--tr-hero); font-weight: 400; max-width: 16ch; }
+.cover .sub { font-size: var(--t-body-lg); line-height: 1.5; color: var(--text-70); max-width: 58ch; margin-top: 16px; }
+.cover .meta-row { display: flex; gap: 48px; padding-top: 40px; border-top: 1px solid var(--line); margin-top: 40px; flex-wrap: wrap; }
+.cover .meta-row .m { display: flex; flex-direction: column; gap: 4px; }
+.cover .meta-row .k { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); }
+.cover .meta-row .v { font-size: var(--t-sm); color: var(--text); }
+.section-cover .s-inner { gap: 32px; align-items: flex-start; }
+.section-cover .marker { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); }
+.section-cover h2 { font-size: clamp(3rem, 6vw, 5rem); line-height: 0.95; letter-spacing: var(--tr-hero); font-weight: 400; max-width: 16ch; }
+.section-cover .summary { font-size: var(--t-body-lg); color: var(--text-70); max-width: 56ch; line-height: 1.55; margin-top: 24px; }
+.pillars { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: 8px; }
+.pillars .pillar { background: var(--bg); padding: 28px 26px; display: flex; flex-direction: column; gap: 14px; min-height: 220px; }
+.pillars .pillar .num { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); }
+.pillars .pillar h3 { font-size: var(--t-h3); font-weight: 500; line-height: 1.2; }
+.pillars .pillar p { font-size: var(--t-sm); color: var(--text-70); line-height: 1.5; margin-top: auto; }
+.wf { display: flex; flex-direction: column; gap: 0; }
+.wf .step { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 13px 0; border-bottom: 1px solid var(--line-subtle); }
+.wf .step:last-child { border-bottom: none; }
+.wf .step .n { font-size: var(--t-xs); color: var(--text-50); letter-spacing: var(--tr-label); text-transform: uppercase; padding-top: 3px; font-variant-numeric: tabular-nums; }
+.wf .step .txt { font-size: var(--t-sm); color: var(--text-90); line-height: 1.5; }
+.wf .step .txt .tag { font-size: 10px; color: var(--text-50); margin-left: 8px; letter-spacing: 0.02em; }
+.wf .step.hero .n { color: var(--red); font-weight: 500; }
+.wf .step.hero .txt { color: var(--text); font-weight: 450; }
+.wf .step .txt code { font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12px; color: var(--text-70); }
+.feat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); }
+.feat-grid .cluster { background: var(--light); padding: 22px 18px; display: flex; flex-direction: column; gap: 10px; }
+.feat-grid .cluster .num { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-dark-50); }
+.feat-grid .cluster h3 { font-size: var(--t-body); font-weight: 500; }
+.feat-grid .cluster ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.feat-grid .cluster li { font-size: var(--t-xs); color: var(--text-dark-70); line-height: 1.5; }
+.status-table { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.status-table .row { display: grid; grid-template-columns: 240px 110px 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line-subtle); align-items: baseline; }
+.status-table .row:last-child { border-bottom: none; }
+.status-table .topic { font-size: var(--t-sm); color: var(--text); font-weight: 450; }
+.status-table .pill { font-size: 10px; padding: 3px 8px; border-radius: 12px; text-align: center; letter-spacing: 0.02em; }
+.status-table .pill.closed { background: rgba(76, 175, 80, 0.15); color: var(--green); border: 1px solid rgba(76, 175, 80, 0.3); }
+.status-table .pill.partial { background: rgba(217, 119, 6, 0.15); color: var(--amber); border: 1px solid rgba(217, 119, 6, 0.3); }
+.status-table .pill.open { background: rgba(229, 57, 53, 0.15); color: var(--red); border: 1px solid rgba(229, 57, 53, 0.3); }
+.status-table .note { font-size: var(--t-xs); color: var(--text-70); line-height: 1.5; }
+.before-after { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.before-after .col { background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 24px 22px; }
+.before-after .col-label { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-50); margin-bottom: 12px; }
+.before-after .col h3 { font-size: 18px; font-weight: 500; margin-bottom: 12px; }
+.before-after .col.before h3 { color: var(--text-70); }
+.before-after .col.after h3 { color: var(--text); }
+.before-after .col ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.before-after .col li { font-size: var(--t-xs); color: var(--text-70); padding: 4px 0; line-height: 1.4; }
+.before-after .col.before li { color: var(--text-50); }
+.before-after .col.after li { color: var(--text-90); font-weight: 450; padding: 6px 10px; background: var(--bg); border-radius: 4px; }
+.flow-two { display: flex; flex-direction: column; gap: 0; align-items: stretch; }
+.flow-two .entry-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.flow-two .entry-pair .entry { background: var(--bg); padding: 18px 22px; display: flex; flex-direction: column; gap: 8px; }
+.flow-two .entry-pair .entry .e-num { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--red); }
+.flow-two .entry-pair .entry p { font-size: var(--t-sm); color: var(--text); line-height: 1.45; }
+.flow-two .merge-arrow { text-align: center; font-size: 18px; color: var(--text-30); padding: 8px 0; line-height: 1; }
+.flow-two .merge-step { background: var(--bg); padding: 16px 22px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); }
+.flow-two .merge-step p { font-size: var(--t-sm); color: var(--text); line-height: 1.5; }
+.flow-two .merge-step.subdued { background: transparent; border-style: dashed; border-color: var(--line); }
+.flow-two .merge-step.subdued p { color: var(--text-70); }
+.discuss { padding: 16px 20px; border: 1px solid var(--line-strong); border-radius: var(--r-sm); background: var(--bg-elevated); margin-top: 8px; font-size: var(--t-xs); color: var(--text-90); line-height: 1.55; }
+.discuss .k { font-size: 10px; letter-spacing: var(--tr-label); text-transform: uppercase; color: var(--text-70); margin-right: 8px; }
+.closing .s-inner { gap: 32px; align-items: flex-start; }
+.closing h2 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 0.95; letter-spacing: var(--tr-hero); font-weight: 400; max-width: 22ch; }
+.closing .outcomes { display: flex; flex-direction: column; gap: 0; margin-top: 16px; border-top: 1px solid var(--line); width: 100%; }
+.closing .outcomes .o { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line-subtle); }
+.closing .outcomes .o .n { font-size: var(--t-xs); color: var(--text-50); letter-spacing: var(--tr-label); text-transform: uppercase; font-variant-numeric: tabular-nums; padding-top: 3px; }
+.closing .outcomes .o .txt { font-size: var(--t-body); color: var(--text-90); line-height: 1.4; }
+.closing .next { margin-top: 32px; font-size: var(--t-sm); color: var(--text-50); padding-top: 24px; border-top: 1px solid var(--line); width: 100%; }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="fill" id="progressFill"></div></div>
+<div class="logo-fixed">makro<span class="dot">.</span><span class="client">× WT Farley</span></div>
+<div class="slide-num" id="slideNum">01 / 13</div>
+<div class="nav-hint">← → or click to navigate</div>
+
+<!-- SLIDE 1 · Cover -->
+<div class="slide dark cover active" data-slide="1">
+  <div class="s-inner">
+    <span class="eyebrow">Shopify replatform · WT Farley × Makro</span>
+    <h1>The QA walkthrough<span class="em">.</span></h1>
+    <p class="sub">A tour of the store as it stands today: what we tested, what we found and fixed, and exactly what to click so your team can validate each feature and sign it off.</p>
+    <div class="meta-row">
+      <div class="m"><span class="k">Date</span><span class="v">July 22, 2026</span></div>
+      <div class="m"><span class="k">Duration</span><span class="v">30 to 40 minutes</span></div>
+      <div class="m"><span class="k">Store</span><span class="v">wt-farley.myshopify.com</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2 · Where the build stands -->
+<div class="slide dark" data-slide="2">
+  <div class="s-inner" style="gap:24px;">
+    <span class="eyebrow">Where we are</span>
+    <h2 class="hdr">Everything a shopper can touch is live on the store.</h2>
+    <div class="status-table">
+      <div class="row">
+        <span class="topic">Data migration</span>
+        <span class="pill closed">Done</span>
+        <span class="note">827 products, 92 collections, 11,274 customers, 17,054 historical orders. Counts verified exactly.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Storefront build</span>
+        <span class="pill closed">Done</span>
+        <span class="note">Header, mega menu, search, collection pages, product pages, cart, content pages, forms.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Product configurator</span>
+        <span class="pill closed">Done</span>
+        <span class="note">31 configurable products live. 8 more built, held until content is confirmed.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Part-number lookup</span>
+        <span class="pill closed">Done</span>
+        <span class="note">Header lookup, on-page lookup, and deep links that prefill a configuration.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Store owner's guide</span>
+        <span class="pill closed">Done</span>
+        <span class="note">17-page guide to running the store, written for your team.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Launch tasks</span>
+        <span class="pill partial">Ahead</span>
+        <span class="note">Domain cutover, analytics confirmation, final redirect map, launch checklist.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3 · How we tested -->
+<div class="slide dark" data-slide="3">
+  <div class="s-inner" style="gap:28px;">
+    <span class="eyebrow">QA method</span>
+    <h2 class="hdr">Three test passes, then everything re-checked this morning.</h2>
+    <div class="pillars">
+      <div class="pillar">
+        <span class="num">01 · Engine and data</span>
+        <h3>Every option, against the old site</h3>
+        <p>All 40 configurable products compared to the legacy export: option groups, choices, part codes, and price add-ons exact to the cent. Over 1,500 choices validated.</p>
+      </div>
+      <div class="pillar">
+        <span class="num">02 · Storefront</span>
+        <h3>Every page type, crawled</h3>
+        <p>Key pages, all 92 collections, menus, images, redirects, search, and cart checked over HTTP. Every fetched page scanned for template errors.</p>
+      </div>
+      <div class="pillar">
+        <span class="num">03 · Hands on</span>
+        <h3>Every feature, clicked</h3>
+        <p>Manual passes on each feature as it was built and again after each fix, plus the responsive layout at the theme's tablet and mobile breakpoints.</p>
+      </div>
+    </div>
+    <div class="discuss">
+      <span class="k">Re-run today</span>
+      All 31 live configurators passed the automated re-check this morning: valid data, no empty required options, correct preview behavior, add to cart wired.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 4 · Found and fixed -->
+<div class="slide dark" data-slide="4">
+  <div class="s-inner" style="gap:24px;">
+    <span class="eyebrow">Found and fixed</span>
+    <h2 class="hdr">QA caught real issues. All of them are fixed and re-verified.</h2>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Air Hose configurator was missing its three core options (length, inlet, outlet), so it could not build a valid part number.<span class="tag">fixed and live</span></span></div>
+      <div class="step"><span class="n">02</span><span class="txt">15-Foot Coiled Air Hose had a required option with zero visible choices, which could block ordering.<span class="tag">fixed</span></span></div>
+      <div class="step"><span class="n">03</span><span class="txt">MRI Vacuum Hose showed the outlet picker twice, risking an ambiguous part number.<span class="tag">fixed</span></span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Old site URLs had no redirects; after launch, saved links would have hit 404 pages.<span class="tag">301s live</span></span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Two internal test products were visible to shoppers at a $999,999 placeholder price.<span class="tag">removed</span></span></div>
+      <div class="step"><span class="n">06</span><span class="txt">34 migrated descriptions carried an old shipping notice with a wrong phone number, plus leftover Word markup.<span class="tag">cleaned</span></span></div>
+      <div class="step"><span class="n">07</span><span class="txt">Configurator pages showed the product photo and pre-picked options before the shopper chose anything.<span class="tag">reworked today, live</span></span></div>
+      <div class="step"><span class="n">08</span><span class="txt">Product cards downloaded full-screen images into card-size slots; desktop image transfer cut by half or better.<span class="tag">optimized today</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 5 · Section: configurator -->
+<div class="slide dark section-cover" data-slide="5">
+  <div class="s-inner">
+    <span class="marker">Part one</span>
+    <h2>The configurator.</h2>
+    <p class="summary">The heart of the store: 31 products where a shopper builds a hose, regulator, manifold or stand option by option, and the part number, price and preview build with them. We will click through three products together.</p>
+  </div>
+</div>
+
+<!-- SLIDE 6 · Configurator walkthrough: oxygen hose -->
+<div class="slide dark" data-slide="6">
+  <div class="s-inner" style="gap:22px;">
+    <span class="eyebrow">Walkthrough 1 · Gas hose with layered preview</span>
+    <h2 class="hdr">Build an oxygen hose, watch the preview assemble itself.</h2>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Open <code>/products/oxygen-hose</code>. Options sit behind the gas choice; part number and price show a dash.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Pick a gas type. The options reveal, and switching gas later swaps the whole product without a page reload.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">Pick a hose length, inlet and outlet. The part number assembles piece by piece and the price climbs with each add-on.</span></div>
+      <div class="step hero"><span class="n">04</span><span class="txt">Watch the image panel: the hose renders in layers, and the chosen fittings appear on the hose ends.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Add to cart. Open the cart: every selection is listed on the line item, with the finished part number.</span></div>
+      <div class="step"><span class="n">06</span><span class="txt">Try adding with a required option missing: the page blocks it and scrolls you to the missing choice.</span></div>
+    </div>
+    <div class="discuss"><span class="k">What to validate</span> The part number matches what your team would quote for the same build, and the price matches your list plus add-ons.</div>
+  </div>
+</div>
+
+<!-- SLIDE 7 · New preview behavior -->
+<div class="slide dark" data-slide="7">
+  <div class="s-inner" style="gap:24px;">
+    <span class="eyebrow">Walkthrough 2 · New this week</span>
+    <h2 class="hdr">Products no longer show a finished photo before you choose.</h2>
+    <div class="before-after">
+      <div class="col before">
+        <div class="col-label">Before</div>
+        <h3>Photo and pre-picked options on load</h3>
+        <ul>
+          <li>The product photo showed immediately, even for a build-to-order product</li>
+          <li>Some options arrived pre-selected</li>
+          <li>Part number and price displayed before any choice was made</li>
+        </ul>
+      </div>
+      <div class="col after">
+        <div class="col-label">Now, live on the store</div>
+        <h3>Nothing until the shopper chooses</h3>
+        <ul>
+          <li>Grey panel with product-specific text, e.g. "Select a Flow Rate to Preview Your Regulator"</li>
+          <li>No option pre-selected; part number and price start blank</li>
+          <li>First pick reveals the product photo; Reset returns to the grey panel</li>
+        </ul>
+      </div>
+    </div>
+    <div class="discuss"><span class="k">Try it</span> Open <code>/products/15-foot-coiled-air-hose</code>. Confirm the grey panel, pick an inlet, watch the photo and part number appear, then hit Reset Configurator.</div>
+  </div>
+</div>
+
+<!-- SLIDE 8 · Color coding -->
+<div class="slide dark" data-slide="8">
+  <div class="s-inner" style="gap:22px;">
+    <span class="eyebrow">Walkthrough 3 · Click regulators</span>
+    <h2 class="hdr">Color Coding changes the picture to the color you picked.</h2>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Open <code>/products/oxygen-standard-body-click-regulator</code>. Grey panel reads "Select a Flow Rate to Preview Your Regulator".</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Pick a flow rate. The regulator photo appears and the part number starts building.</span></div>
+      <div class="step hero"><span class="n">03</span><span class="txt">Open Color Coding and pick Green, then Blue, then Red. The photo swaps to the matching color each time.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">Finish the remaining options and confirm the finished part number matches your catalog for that build.</span></div>
+    </div>
+    <div class="discuss"><span class="k">Same behavior</span> All four click regulators carry the color swap. Wall outlet manifolds show their gas artwork uncropped on the gas tiles, fixed this morning after your note.</div>
+  </div>
+</div>
+
+<!-- SLIDE 9 · Lookup -->
+<div class="slide dark" data-slide="9">
+  <div class="s-inner" style="gap:22px;">
+    <span class="eyebrow">Part two · Part-number lookup</span>
+    <h2 class="hdr">A customer with a part number gets a ready-to-buy page.</h2>
+    <div class="flow-two">
+      <div class="entry-pair">
+        <div class="entry">
+          <span class="e-num">Path A · Header</span>
+          <p>Switch the header search to Lookup and enter a part number from an old invoice.</p>
+        </div>
+        <div class="entry">
+          <span class="e-num">Path B · Product page</span>
+          <p>Use the "Have a part number?" bar at the top of any configurator page.</p>
+        </div>
+      </div>
+      <div class="merge-arrow">↓</div>
+      <div class="merge-step"><p><strong>Both land on the right product with the configuration prefilled.</strong> A full part number fills every option; a partial one fills what it can and asks the shopper to complete the rest.</p></div>
+      <div class="merge-arrow">↓</div>
+      <div class="merge-step subdued"><p>Entering a part number on the wrong product page routes to the right product automatically.</p></div>
+    </div>
+    <div class="discuss"><span class="k">Honest note</span> Legacy composite part numbers resolve through suggestions rather than an exact match, because they never existed as single SKUs. Typing a part number into the regular search (not Lookup) returns nothing; we recommend routing those queries to Lookup automatically and we cover it in training.</div>
+  </div>
+</div>
+
+<!-- SLIDE 10 · Storefront tour -->
+<div class="slide light" data-slide="10">
+  <div class="s-inner" style="gap:32px;">
+    <span class="eyebrow">Part three · The storefront</span>
+    <h2 class="hdr">Eight areas to click through on the tour.</h2>
+    <div class="feat-grid">
+      <div class="cluster">
+        <span class="num">01 · Header</span>
+        <h3>Navigation</h3>
+        <ul><li>Sticky header and menu</li><li>Mega menu mirrors the old site structure</li><li>Cart count updates live</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">02 · Search</span>
+        <h3>Quick search</h3>
+        <ul><li>Categories and products as you type</li><li>Lookup toggle for part numbers</li><li>Full results page with filters</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">03 · Collections</span>
+        <h3>Category pages</h3>
+        <ul><li>Banner, sticky filters and toolbar</li><li>More products load as you scroll</li><li>18-card category grid on home</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">04 · Product pages</span>
+        <h3>Standard products</h3>
+        <ul><li>Gallery, documents, specifications</li><li>Pill-style option dropdowns</li><li>Sticky add-to-cart bar</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">05 · Cart</span>
+        <h3>Mini cart</h3>
+        <ul><li>Slide-out with quantities</li><li>Configurator selections on line items</li><li>Straight into checkout</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">06 · Content</span>
+        <h3>Pages</h3>
+        <ul><li>About, FAQ, Terms</li><li>Customer testimonials (20 quotes)</li><li>Contact form</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">07 · Dealers</span>
+        <h3>Dealer application</h3>
+        <ul><li>Full application form</li><li>Same fields as the old site's form</li><li>Submissions land in Shopify</li></ul>
+      </div>
+      <div class="cluster">
+        <span class="num">08 · Trust</span>
+        <h3>Policies and consent</h3>
+        <ul><li>Refund and legal pages</li><li>Cookie consent banner</li><li>Old links redirect to new pages</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11 · Mobile -->
+<div class="slide dark" data-slide="11">
+  <div class="s-inner" style="gap:22px;">
+    <span class="eyebrow">Part four · On a phone</span>
+    <h2 class="hdr">The same checks, one hand, smaller screen.</h2>
+    <div class="wf">
+      <div class="step"><span class="n">01</span><span class="txt">Open any configurator product. The layout stacks: preview panel on top, options below, and the grey panel and photo reveal behave the same.</span></div>
+      <div class="step"><span class="n">02</span><span class="txt">Gas tiles wrap to three per row and stay aligned.</span></div>
+      <div class="step"><span class="n">03</span><span class="txt">On a collection page, filters and the toolbar stay reachable while scrolling, and more products keep loading.</span></div>
+      <div class="step"><span class="n">04</span><span class="txt">On a standard product, the sticky add-to-cart bar stays at hand as you scroll the page.</span></div>
+      <div class="step"><span class="n">05</span><span class="txt">Menu, quick search and Lookup all work from the mobile header.</span></div>
+    </div>
+    <div class="discuss"><span class="k">Ask</span> We would like at least one pass from your team on an iPhone and one on Android as part of sign-off; the validation matrix in the QA report lists the exact rows.</div>
+  </div>
+</div>
+
+<!-- SLIDE 12 · Open items -->
+<div class="slide dark" data-slide="12">
+  <div class="s-inner" style="gap:24px;">
+    <span class="eyebrow">Open items</span>
+    <h2 class="hdr">What is still open, and who holds the ball.</h2>
+    <div class="status-table">
+      <div class="row">
+        <span class="topic">Analytics (GA4 / GTM)</span>
+        <span class="pill open">Makro + you</span>
+        <span class="note">No tag detected on the storefront; we confirm the setup and close it before launch.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Reviews app</span>
+        <span class="pill partial">Your call</span>
+        <span class="note">Judge.me is installed; the original plan named Yotpo. Confirm the choice and where reviews show.</span>
+      </div>
+      <div class="row">
+        <span class="topic">8 unpublished configurators</span>
+        <span class="pill partial">Your call</span>
+        <span class="note">IV poles, equipment stands, nebbulator, coiled oxygen hose: built and ready, waiting on content confirmation.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Product content</span>
+        <span class="pill partial">Your call</span>
+        <span class="note">24 products need descriptions after the legacy-notice cleanup; 2 products have no photo.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Duplicate SKUs</span>
+        <span class="pill partial">Your call</span>
+        <span class="note">30 SKUs shared across products (brand cross-listings and one price conflict). Keep-or-merge call per case.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Redirect map extension</span>
+        <span class="pill open">Makro</span>
+        <span class="note">Older .html category URLs from the legacy site get added to the redirect map before launch.</span>
+      </div>
+      <div class="row">
+        <span class="topic">Lookup polish</span>
+        <span class="pill open">Makro</span>
+        <span class="note">Remove sample part numbers from the header suggestions; route part-number searches to Lookup.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13 · Closing -->
+<div class="slide dark closing" data-slide="13">
+  <div class="s-inner">
+    <span class="eyebrow">From here</span>
+    <h2>Your turn to break it<span class="em">.</span></h2>
+    <div class="outcomes">
+      <div class="o"><span class="n">01</span><span class="txt">Walk the validation matrix in the QA report: one desktop browser and one phone per row, checking part numbers and prices against your catalog.</span></div>
+      <div class="o"><span class="n">02</span><span class="txt">Anything off: use the Report Issue tab on the right edge of the preview, or drop it in our shared thread. We triage daily.</span></div>
+      <div class="o"><span class="n">03</span><span class="txt">Send the open decisions back (reviews app, unpublished products, duplicate SKUs) so we can close them out.</span></div>
+      <div class="o"><span class="n">04</span><span class="txt">We close the launch items on our side: analytics, redirect map, lookup polish, then the launch checklist.</span></div>
+    </div>
+    <p class="next">Target: your validation pass within the week, then we lock the launch checklist together.</p>
+  </div>
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+function goTo(idx) {
+  if (idx < 0 || idx >= total) return;
+  slides[current].classList.remove('active');
+  current = idx;
+  slides[current].classList.add('active');
+  document.getElementById('slideNum').textContent =
+    String(current + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  document.getElementById('progressFill').style.width =
+    ((current + 1) / total * 100) + '%';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
+  if (e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+  if (e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('a')) return;
+  const x = e.clientX;
+  if (x > window.innerWidth * 0.5) goTo(current + 1);
+  else goTo(current - 1);
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', (e) => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0) goTo(current + 1);
+    else goTo(current - 1);
+  }
+});
+
+document.getElementById('slideNum').textContent = '01 / ' + String(total).padStart(2, '0');
+document.getElementById('progressFill').style.width = (1 / total * 100) + '%';
+</script>
+
+</body>
+</html>

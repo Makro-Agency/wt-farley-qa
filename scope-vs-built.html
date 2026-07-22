@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128203;</text></svg>">
+<title>WT Farley · Scope vs Built (Internal)</title>
+<style>
+  :root {
+    --green: 6 155 0; --green-deep: 4 120 0; --ink: 31 42 31; --ink-soft: 74 88 74;
+    --paper: 255 255 255; --panel: 247 249 247; --line: 210 212 210;
+    --amber: 176 104 0; --amber-bg: 255 247 232;
+    --red: 178 34 34; --red-bg: 253 240 240;
+    --blue: 30 90 160; --blue-bg: 238 244 251;
+    --radius: 12px; --maxw: 1180px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --green: 74 210 66; --green-deep: 120 225 112; --ink: 226 232 226; --ink-soft: 165 178 165;
+      --paper: 18 22 18; --panel: 28 34 28; --line: 52 62 52;
+      --amber: 240 196 120; --amber-bg: 42 34 18; --red: 235 120 120; --red-bg: 44 24 24;
+      --blue: 130 175 235; --blue-bg: 22 30 42; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font); color: rgb(var(--ink)); background: rgb(var(--paper)); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+  header.hero { border-bottom: 1px solid rgb(var(--line)); background: linear-gradient(180deg, rgb(var(--panel)), rgb(var(--paper))); }
+  .hero__inner { padding: 44px 0 36px; }
+  .eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgb(var(--green)); padding: 5px 12px; border: 1px solid rgb(var(--green) / .4); border-radius: 100px; margin-bottom: 16px; }
+  h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.15; margin: 0 0 10px; letter-spacing: -0.5px; }
+  .lede { font-size: 17px; color: rgb(var(--ink-soft)); max-width: 70ch; margin: 0; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .chip { font-size: 13px; background: rgb(var(--paper)); border: 1px solid rgb(var(--line)); border-radius: 100px; padding: 6px 14px; color: rgb(var(--ink-soft)); }
+  .chip strong { color: rgb(var(--ink)); font-weight: 650; }
+  main { padding: 36px 0 90px; }
+  h2 { font-size: 21px; margin: 44px 0 6px; letter-spacing: -0.3px; }
+  h2:first-of-type { margin-top: 0; }
+  .sec-note { color: rgb(var(--ink-soft)); font-size: 14px; margin: 0 0 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; background: rgb(var(--paper)); border: 1px solid rgb(var(--line)); border-radius: var(--radius); overflow: hidden; }
+  thead th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgb(var(--ink-soft)); background: rgb(var(--panel)); padding: 10px 14px; border-bottom: 1px solid rgb(var(--line)); }
+  tbody td { padding: 11px 14px; border-bottom: 1px solid rgb(var(--line) / .55); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  td.feat { font-weight: 650; width: 24%; }
+  td.stat { width: 12%; white-space: nowrap; }
+  .pill { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .4px; text-transform: uppercase; border-radius: 100px; padding: 3px 10px; }
+  .p-built { background: rgb(var(--green) / .14); color: rgb(var(--green-deep)); }
+  .p-plus { background: rgb(var(--green) / .22); color: rgb(var(--green-deep)); outline: 1px solid rgb(var(--green) / .5); }
+  .p-verify { background: rgb(var(--blue-bg)); color: rgb(var(--blue)); }
+  .p-open { background: rgb(var(--red-bg)); color: rgb(var(--red)); }
+  .p-partial { background: rgb(var(--amber-bg)); color: rgb(var(--amber)); }
+  .note { color: rgb(var(--ink-soft)); }
+  .note code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; color: rgb(var(--green-deep)); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 4px; }
+  .callout { border: 1px solid rgb(var(--line)); border-left: 4px solid rgb(var(--green)); background: rgb(var(--panel)); border-radius: 8px; padding: 14px 18px; font-size: 14px; margin: 20px 0; }
+  footer { border-top: 1px solid rgb(var(--line)); padding: 18px 0 40px; color: rgb(var(--ink-soft)); font-size: 13px; }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap"><div class="hero__inner">
+  <span class="eyebrow">Internal · Makro team only</span>
+  <h1>WT Farley: Scope vs Built</h1>
+  <p class="lede">Line-by-line comparison of the SOW build scope against what is live on wt-farley.myshopify.com. Compiled for the client QA demo. Statuses verified against the live theme, store data, and the 10 to 22 Jul QA passes.</p>
+  <div class="meta-row">
+    <span class="chip">Date <strong>22 Jul 2026</strong></span>
+    <span class="chip">Store <strong>wt-farley.myshopify.com</strong></span>
+    <span class="chip">Live theme <strong>#154181435530</strong></span>
+    <span class="chip">Scope source <strong>Scope.xlsx (Build sheet)</strong></span>
+  </div>
+</div></div></header>
+<div class="wrap"><main>
+
+<div class="legend">
+  <span class="pill p-built">Built</span>
+  <span class="pill p-plus">Built +</span> <span class="note" style="font-size:13px">delivered beyond the scope line</span>
+  <span class="pill p-partial">Partial</span>
+  <span class="pill p-verify">Verify</span> <span class="note" style="font-size:13px">needs a manual check in admin before we claim it to the client</span>
+  <span class="pill p-open">Open</span>
+</div>
+
+<h2>A. Site configuration</h2>
+<table><thead><tr><th>Scope item</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Configure Shopify environment</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Store configured, single site, single language (English), single currency (USD).</td></tr>
+<tr><td class="feat">Theme deployment workflow / Git</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Makro Core base theme, GitHub-synced live theme <code>wt-farley/main</code>, draft-first deploy process in active use.</td></tr>
+<tr><td class="feat">Shopify native discount setup</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Native discount engine in place. No custom promotions scoped or built.</td></tr>
+<tr><td class="feat">Shipping rates</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Order-value rate table plus a freight-quote profile configured via API on 11 Jul.</td></tr>
+<tr><td class="feat">Branding API (checkout styling)</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Confirm checkout logo, fonts and accent match the style guide before launch. Two-minute check in admin.</td></tr>
+</tbody></table>
+
+<h2>B. Core build</h2>
+<table><thead><tr><th>Scope item</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Style guide / pattern library</td><td class="feat stat"><span class="pill p-built">Built</span></td><td class="note">Makro Core pattern library styled to the approved WT Farley design system (Figma).</td></tr>
+<tr><td class="feat">Product card</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Global card used on PLP, search, sliders. Image delivery optimized 22 Jul (responsive sizes hints).</td></tr>
+<tr><td class="feat">Product badges</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Metafield-driven badge logic is in the theme. Confirm badge content is populated on real products before demoing.</td></tr>
+<tr><td class="feat">Header navigation</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Sticky header and menu (15 Jul). Extras beyond scope: SKU Lookup mode in the header search.</td></tr>
+<tr><td class="feat">Mega menu</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Full mega menu rebuilt from the old site structure via API (11 Jul).</td></tr>
+<tr><td class="feat">Footer navigation</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Social and legal links live. The three placeholder links flagged on 13 Jul (COA Finder, Catalog, Locations) no longer render on the storefront.</td></tr>
+<tr><td class="feat">Search dropdown</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Quick-search redesigned into Categories + Products panels, plus the Lookup toggle. Note: free-text works, part numbers resolve through Lookup, not native search.</td></tr>
+<tr><td class="feat">Home page / global section library</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Homepage assembled from the section library, including the 18-card Shop by Category grid (Figma assets).</td></tr>
+<tr><td class="feat">Search results / no results</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Search page has full collection-page parity: same grid, filters, toolbar.</td></tr>
+<tr><td class="feat">PLP: grid, banner, filter, sort</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Collection banner, sticky filters and toolbar (15 Jul).</td></tr>
+<tr><td class="feat">PLP: pagination</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Delivered as infinite scroll instead of numbered pagination. Approved UX direction; call it out if the client asks.</td></tr>
+<tr><td class="feat">Category landing page</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Category grid template live (category cards link to collections).</td></tr>
+<tr><td class="feat">PDP: product form and swatches</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">Custom pill dropdown with floating option list replaces the native variant select (Figma design).</td></tr>
+<tr><td class="feat">PDP: media gallery</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Standard gallery on normal products. Configurator products get the dedicated preview panel (see section C).</td></tr>
+<tr><td class="feat">PDP: sections</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Documents accordion, specifications, product notes, certification images.</td></tr>
+<tr><td class="feat">PDP: reviews and rating</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Judge.me detected on the storefront. Scope named Yotpo. Confirm the app decision with the client and whether review widgets should show on PDP.</td></tr>
+<tr><td class="feat">Custom contact us page</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note"><code>/pages/contact</code> live with the flexible form.</td></tr>
+<tr><td class="feat">Mini cart</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Slide-out cart with line items, quantity, subtotal, checkout.</td></tr>
+<tr><td class="feat">Cart page</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Scope says <code>/cart</code> redirects home and opens the mini cart. <code>/cart</code> answers 200; confirm the behavior matches the scope assumption.</td></tr>
+<tr><td class="feat">Auth flow pages</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Login, register, activate, reset, addresses templates styled in the theme.</td></tr>
+<tr><td class="feat">Account pages</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Scope assumes new Customer Accounts with passwordless login. Confirm which account experience is switched on.</td></tr>
+<tr><td class="feat">Text content page templates</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">About Us, FAQ, Terms, Testimonials, Dealer templates all live (8 pages in the sitemap).</td></tr>
+<tr><td class="feat">404 page styling</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Styled 404 template in theme.</td></tr>
+<tr><td class="feat">Transactional emails</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Confirm logo and accent color applied in Shopify email settings.</td></tr>
+</tbody></table>
+
+<h2>C. Custom features</h2>
+<table><thead><tr><th>Scope item</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Configurable Product Builder</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">31 configurator products live (40 built, 8 held unpublished pending client content, 1 rebuilt handle). Option groups and choices run on metaobjects with price add-ons, live part number assembly, add to cart with selection properties, and required-option blocking. Beyond scope: gas-type switcher across sibling products without a page reload, layered hose preview on all 9 gas hoses, preview placeholder until first selection, Color Coding image swap, per-family headings.</td></tr>
+<tr><td class="feat">Part-Number Lookup</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Three entries: header Lookup mode, on-PDP lookup bar, and <code>?sku=</code> deep links. Middleware API resolves and prefixes route to the right product with options prefilled, including partial part numbers. Known gap: legacy composite part numbers resolve to suggestions rather than exact matches (they are not variant SKUs by design).</td></tr>
+<tr><td class="feat">About Us CMS page</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note"><code>/pages/about-us</code> live.</td></tr>
+<tr><td class="feat">FAQ page</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note"><code>/pages/faq</code> live (template <code>page.faq.json</code>).</td></tr>
+<tr><td class="feat">Information slide-outs</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Scope line is thin ("information slide out about hose and poles"). Confirm whether the PDP documents accordion and product notes cover it or a slide-out is still expected.</td></tr>
+</tbody></table>
+
+<h2>D. Integrations and apps</h2>
+<table><thead><tr><th>Scope item</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Shopify Search &amp; Discovery</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Filters and facets running on PLP and search.</td></tr>
+<tr><td class="feat">Reviews and rating app</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Judge.me scripts present on the storefront; scope assumed Yotpo. Align with client, then confirm placement.</td></tr>
+<tr><td class="feat">Cookie banner (Pandectes)</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Pandectes detected on the storefront.</td></tr>
+<tr><td class="feat">GA4 / GTM analytics</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">No GTM container or gtag detected in storefront HTML on 22 Jul. Klaviyo is present. If GA4 runs through the Shopify Google channel it will not show as gtag; confirm and close either way before launch.</td></tr>
+</tbody></table>
+
+<h2>E. Platform and launch</h2>
+<table><thead><tr><th>Scope item</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Payment provider</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Confirm Shopify Payments (or chosen gateway) is in live mode for launch.</td></tr>
+<tr><td class="feat">Tax management</td><td class="stat"><span class="pill p-verify">Verify</span></td><td class="note">Confirm tax settings against WT Farley's requirements.</td></tr>
+<tr><td class="feat">Domain setup</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">Store still on <code>wt-farley.myshopify.com</code>. Domain cutover is a launch-day task.</td></tr>
+<tr><td class="feat">Sitemap and robots.txt</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Native sitemaps live and correct. Note: <code>/pages/page-template</code> is published and appears in the sitemap; unpublish it.</td></tr>
+<tr><td class="feat">SEO: meta tags, friendly URLs</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">Native handling. 9 product handles still end in <code>-html</code> (legacy import artifact); keep or rename with redirects.</td></tr>
+<tr><td class="feat">SEO: 301 redirects</td><td class="stat"><span class="pill p-partial">Partial</span></td><td class="note">Legacy path redirects now return 301 (the 13 Jul gap is closed). Old <code>_c_NN.html</code> style category URLs still 404 in sampling; extend the redirect map before launch.</td></tr>
+<tr><td class="feat">Content guides / training</td><td class="stat"><span class="pill p-plus">Built +</span></td><td class="note">17-page Store Owner's Guide live on GitHub Pages (makro-agency.github.io/wt-farley-docs). Training session not yet scheduled.</td></tr>
+<tr><td class="feat">Pre-launch checklist / launch plan</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">To be drafted once QA sign-off lands.</td></tr>
+</tbody></table>
+
+<h2>Data migration (delivery phases, alongside SOW scope)</h2>
+<table><thead><tr><th>Phase</th><th>Status</th><th>What is live / notes</th></tr></thead><tbody>
+<tr><td class="feat">Phase 1: Products</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">827 products migrated from Shift4Shop (760 active). Body cleanup done 21 Jul: legacy shipping notice with a wrong phone number and MS Word markup removed from 34 products. 24 products now have empty descriptions and need content; 2 active products have no image.</td></tr>
+<tr><td class="feat">Phase 2: Collections</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">92 smart collections (tag rules), none empty.</td></tr>
+<tr><td class="feat">Phase 3: Customers</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">11,274 customers imported.</td></tr>
+<tr><td class="feat">Phase 4: Orders</td><td class="stat"><span class="pill p-built">Built</span></td><td class="note">17,054 historical orders imported, email-matched to customers, archived/paid/fulfilled.</td></tr>
+<tr><td class="feat">Data decisions with client</td><td class="stat"><span class="pill p-open">Open</span></td><td class="note">30 SKUs shared across multiple products (some intentional cross-listing, some near-duplicates such as the 6-shelf cart pair, and OR-870A on two products at different prices). Client call needed on dedupe vs keep.</td></tr>
+</tbody></table>
+
+<div class="callout"><strong>Bottom line for the demo.</strong> Everything in sections A to C that a client can see in a browser is live and passed today's automated re-check. The open items are analytics confirmation, launch-day tasks (domain, redirect map extension), app decision on reviews, and content-side items that sit with WT Farley (empty descriptions, unpublished configurators, duplicate SKU decisions).</div>
+
+<footer>Prepared by Makro · internal working document · 22 Jul 2026. Sources: Scope.xlsx, QA passes 10 to 13 Jul, configurator audits 11 to 12 Jul, automated re-check 22 Jul.</footer>
+</main></div>
+</body>
+</html>
