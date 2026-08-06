@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>&#128203;</text></svg>">
+<title>UAT Feedback Assessment</title>
+<style>
+  :root {
+    --page: #f6f8f9;
+    --surface: #ffffff;
+    --ink: #1c2733;
+    --muted: #5a6b7a;
+    --line: #dce3e9;
+    --accent: #1f5f8b;
+    --c-data: #8a6a28;
+    --c-data-bg: #f3ecda;
+    --c-change: #1f5f8b;
+    --c-change-bg: #e3edf5;
+    --c-defect: #a84e32;
+    --c-defect-bg: #f6e6df;
+    --c-search: #b07d3a;
+    --c-search-bg: #f5edde;
+    --c-sku: #2f7a6b;
+    --c-sku-bg: #e2f0ec;
+    --c-figma: #6e5a8e;
+    --c-figma-bg: #ece6f4;
+    --c-q: #5a6b7a;
+    --c-q-bg: #e8edf1;
+    --good: #2f7a53;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --page: #121a21;
+      --surface: #1a232c;
+      --ink: #e6ecf1;
+      --muted: #94a4b2;
+      --line: #2b3742;
+      --accent: #6aa8d4;
+      --c-data: #d4b25e;
+      --c-data-bg: #2e2a1a;
+      --c-change: #6aa8d4;
+      --c-change-bg: #1c2c3a;
+      --c-defect: #d98a6c;
+      --c-defect-bg: #33221b;
+      --c-search: #d4a45e;
+      --c-search-bg: #2e2718;
+      --c-sku: #6fbfa9;
+      --c-sku-bg: #1a2f2a;
+      --c-figma: #ab96cc;
+      --c-figma-bg: #292234;
+      --c-q: #94a4b2;
+      --c-q-bg: #232d36;
+      --good: #6fbf93;
+    }
+  }
+  :root[data-theme="light"] {
+    --page: #f6f8f9; --surface: #ffffff; --ink: #1c2733; --muted: #5a6b7a; --line: #dce3e9;
+    --accent: #1f5f8b;
+    --c-data: #8a6a28; --c-data-bg: #f3ecda;
+    --c-change: #1f5f8b; --c-change-bg: #e3edf5;
+    --c-defect: #a84e32; --c-defect-bg: #f6e6df;
+    --c-search: #b07d3a; --c-search-bg: #f5edde;
+    --c-sku: #2f7a6b; --c-sku-bg: #e2f0ec;
+    --c-figma: #6e5a8e; --c-figma-bg: #ece6f4;
+    --c-q: #5a6b7a; --c-q-bg: #e8edf1;
+    --good: #2f7a53;
+  }
+  :root[data-theme="dark"] {
+    --page: #121a21; --surface: #1a232c; --ink: #e6ecf1; --muted: #94a4b2; --line: #2b3742;
+    --accent: #6aa8d4;
+    --c-data: #d4b25e; --c-data-bg: #2e2a1a;
+    --c-change: #6aa8d4; --c-change-bg: #1c2c3a;
+    --c-defect: #d98a6c; --c-defect-bg: #33221b;
+    --c-search: #d4a45e; --c-search-bg: #2e2718;
+    --c-sku: #6fbfa9; --c-sku-bg: #1a2f2a;
+    --c-figma: #ab96cc; --c-figma-bg: #292234;
+    --c-q: #94a4b2; --c-q-bg: #232d36;
+    --good: #6fbf93;
+  }
+
+  body {
+    background: var(--page);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(26px, 4vw, 36px); line-height: 1.15; margin: 0 0 10px;
+    letter-spacing: -0.015em; text-wrap: balance; font-weight: 700;
+  }
+  .meta { color: var(--muted); font-size: 14px; margin: 0 0 6px; }
+  h2 {
+    font-size: 20px; margin: 0 0 4px; letter-spacing: -0.01em; text-wrap: balance;
+    display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  }
+  h3 { font-size: 15px; margin: 0 0 6px; }
+  p { margin: 0 0 14px; max-width: 72ch; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13.5px; }
+  strong { font-weight: 650; }
+
+  .lede {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 22px 24px; margin: 28px 0;
+  }
+  .lede p { margin: 0; font-size: 16.5px; }
+
+  .statrow { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; }
+  .stat {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 18px; flex: 1 1 150px; min-width: 140px;
+  }
+  .stat .n { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .stat .l { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .stat.hero .n { color: var(--good); }
+
+  .bar { display: flex; height: 26px; border-radius: 7px; overflow: hidden; margin: 26px 0 10px; }
+  .bar div { min-width: 3px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  section { margin-top: 44px; }
+  .cat-count {
+    font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px;
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .rule { border: 0; border-top: 1px solid var(--line); margin: 40px 0 0; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 16px; }
+  .chip {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px; padding: 2px 8px; border-radius: 5px; letter-spacing: 0.01em;
+  }
+
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  .tablebox { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; margin: 16px 0; }
+  th {
+    text-align: left; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--muted); font-weight: 600; padding: 12px 16px; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  td { padding: 11px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td.tid {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12.5px; white-space: nowrap; color: var(--muted);
+  }
+
+  .verdict {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 8px; border-radius: 5px; white-space: nowrap;
+  }
+  .v-change { background: var(--c-change-bg); color: var(--c-change); }
+  .v-data { background: var(--c-data-bg); color: var(--c-data); }
+  .v-defect { background: var(--c-defect-bg); color: var(--c-defect); }
+  .v-mixed { background: var(--c-search-bg); color: var(--c-search); }
+
+  .cards { display: grid; gap: 12px; margin: 16px 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 20px;
+  }
+  .card h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .card p { margin: 0; font-size: 14px; color: var(--muted); max-width: none; }
+  .card p b { color: var(--ink); font-weight: 600; }
+
+  .say { display: grid; grid-template-columns: 1fr 1fr; gap: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; margin: 16px 0; }
+  .say > div { padding: 16px 20px; }
+  .say .no { border-right: 1px solid var(--line); }
+  .say h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 10px; }
+  .say .no h3 { color: var(--c-defect); }
+  .say .yes h3 { color: var(--good); }
+  .say ul { margin: 0; padding-left: 18px; font-size: 14px; }
+  .say li { margin-bottom: 8px; }
+  @media (max-width: 640px) {
+    .say { grid-template-columns: 1fr; }
+    .say .no { border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+
+  footer { margin-top: 48px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Makro Agency · Internal Analysis</p>
+  <h1>UAT Feedback Assessment</h1>
+  <p class="meta">Marker.io project wt-farley.myshopify.com · 102 tickets, WFQ-6 to WFQ-108 · 15 Jul to 6 Aug 2026 · Reported almost entirely by Rich Gilbert and Emma Wennar (client), plus 2 internal QA tickets</p>
+
+  <div class="lede">
+    <p><strong>Only 15 of 102 tickets, about one in seven, are defects in the build, and they resolve to just 9 distinct root causes, none severe.</strong> The rest of the queue is source-data cleanup inherited from the Shift4Shop export, artwork iteration supplied by the client mid-QA, and change requests raised as the client discovered new requirements while using the site. Ticket statuses like "Resolved" and "Fixed" describe work completed, not faults admitted: many resolved tickets were data reconciliation or requested changes, and the three highest-visibility complaints turned out on investigation to be legacy data, intentional design, and standard browser behavior.</p>
+  </div>
+
+  <div class="statrow">
+    <div class="stat hero"><div class="n">15%</div><div class="l">of tickets are build defects (15 of 102)</div></div>
+    <div class="stat"><div class="n">9</div><div class="l">distinct defect root causes</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">open defects today</div></div>
+    <div class="stat"><div class="n">92</div><div class="l">tickets resolved overall</div></div>
+  </div>
+
+  <div class="bar" role="img" aria-label="Distribution of 102 tickets by category">
+    <div style="flex: 41; background: var(--c-data);" title="Source data and assets: 41"></div>
+    <div style="flex: 29; background: var(--c-change);" title="Change requests: 29"></div>
+    <div style="flex: 15; background: var(--c-defect);" title="Build defects: 15"></div>
+    <div style="flex: 6; background: var(--c-sku);" title="Part numbers from export: 6"></div>
+    <div style="flex: 4; background: var(--c-figma);" title="Figma alignment: 4"></div>
+    <div style="flex: 3; background: var(--c-search);" title="Search, export-data rooted: 3"></div>
+    <div style="flex: 4; background: var(--c-q);" title="Questions and tooling: 4"></div>
+  </div>
+  <div class="legend">
+    <span><i class="dot" style="background: var(--c-data);"></i>Source data &amp; assets · 41</span>
+    <span><i class="dot" style="background: var(--c-change);"></i>Change requests · 29</span>
+    <span><i class="dot" style="background: var(--c-defect);"></i>Build defects · 15</span>
+    <span><i class="dot" style="background: var(--c-sku);"></i>Part numbers from export · 6</span>
+    <span><i class="dot" style="background: var(--c-figma);"></i>Figma alignment · 4</span>
+    <span><i class="dot" style="background: var(--c-search);"></i>Search, data-rooted · 3</span>
+    <span><i class="dot" style="background: var(--c-q);"></i>Questions &amp; tooling · 4</span>
+  </div>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Source data &amp; assets <span class="cat-count" style="background: var(--c-data-bg); color: var(--c-data);">41 tickets · 40%</span></h2>
+    <p>The largest bucket by far, and it originates upstream of the build. The migration data came from the client's Shift4Shop export, which Rich himself flagged as unreliable (WFQ-35: SKU suffixes like "-G" corrupted into formula errors). Remediation has been done by crawling their live site and reconciling against it. Within this bucket, <strong>17 tickets (WFQ-45 to 48, 65, 66, 74, 77, 80 to 89, 91) are the client supplying new or corrected fitting artwork</strong> for the hose configurator: "replace this image with the attached PNG." That is asset iteration by the client, not rework of anything built wrong. The rest is legacy content: wrong or missing product photos, duplicated descriptions, products absent from the export (WFQ-92, 93), broken cert links, grammar and UK spellings carried over from old copy.</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-6</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-7</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-12</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-17</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-22</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-24</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-25</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-27</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-28</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-29</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-30</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-45</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-46</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-47</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-48</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-50</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-52</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-65</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-66</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-71</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-74</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-77</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-80</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-81</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-82</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-83</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-84</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-85</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-86</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-87</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-88</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-89</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-90</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-91</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-92</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-93</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-95</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-99</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-100</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-104</span><span class="chip" style="background: var(--c-data-bg); color: var(--c-data);">WFQ-106</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Change requests &amp; enhancements <span class="cat-count" style="background: var(--c-change-bg); color: var(--c-change);">29 tickets · 28%</span></h2>
+    <p>Cases where the site works as built and the client asked for different behavior, layout, or wording: remove the filter sidebar and go 4-across (WFQ-70), clickable side categories with a new subcategory layout (WFQ-76), breadcrumbs (WFQ-79), dropdowns that open upward (WFQ-108), color swatches converted to labeled dropdowns (WFQ-69, 96), narrower option dropdowns with a bigger product image (WFQ-18, 97, 107), skip re-selecting gas type (WFQ-55), typography and emphasis changes, label rewording, form field changes. None of these cite the Figma design as their basis: they are requirements that emerged during UAT. Follow-up tickets here (96, 97, 102, 107) are refinement rounds on earlier requests, not failed fixes.</p>
+    <p>This group also holds five tickets that were logged as bugs but proved on investigation to be intentional design or scope additions: they are detailed in the evidence section below (WFQ-10, 40, 43, 60, 72).</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-10</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-15</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-18</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-23</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-33</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-36</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-38</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-40</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-42</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-43</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-44</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-49</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-55</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-57</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-58</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-59</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-60</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-61</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-62</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-69</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-70</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-72</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-76</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-79</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-96</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-97</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-102</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-107</span><span class="chip" style="background: var(--c-change-bg); color: var(--c-change);">WFQ-108</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Build defects <span class="cat-count" style="background: var(--c-defect-bg); color: var(--c-defect);">15 tickets · 9 root causes · 15%</span></h2>
+    <p>The genuine faults in the build. All 15 are resolved with verification evidence recorded on the live theme, and two of them were caught by our own internal QA before the client ever saw them. None involved checkout failure, data loss, or downtime. In several cases the fix was swept wider than the report: all 81 category links tested, all 98 collection pages swept, the same scroll bug pre-emptively fixed on the search page.</p>
+    <div class="tablebox">
+      <table>
+        <thead><tr><th>Tickets</th><th>Root cause</th><th>Scale</th></tr></thead>
+        <tbody>
+          <tr><td class="tid">WFQ-64, 94</td><td>Enter key handled on key-release so search never navigated; styled trigger left a second search bar visible</td><td>Theme JS + CSS</td></tr>
+          <tr><td class="tid">WFQ-31</td><td>Infinite scroll observer never re-armed, stalled after one page (all sorts, not just price)</td><td>Theme JS</td></tr>
+          <tr><td class="tid">WFQ-75</td><td>Custom dropdown closed on scrollbar drag (focusout with null target)</td><td>Theme JS</td></tr>
+          <tr><td class="tid">WFQ-73</td><td>Mobile collection hero overlaid text on the banner photo below 750px</td><td>CSS, mobile only</td></tr>
+          <tr><td class="tid">WFQ-56</td><td>Configurator gate asked for a gas choice the URL had already made</td><td>Theme JS</td></tr>
+          <tr><td class="tid">WFQ-51, 53, 54</td><td>Banner error-handling hole printed a Liquid error instead of falling back to text (triggered by small legacy images)</td><td>One cause, 3 tickets</td></tr>
+          <tr><td class="tid">WFQ-19, 20</td><td>Seven collections not published to the Online Store channel, so valid links returned 404 (a missed setup step, not broken code)</td><td>One config step, 2 tickets</td></tr>
+          <tr><td class="tid">WFQ-41</td><td>Empty-cart button pointed at the collections list instead of all-products (a one-line link target)</td><td>Trivial</td></tr>
+          <tr><td class="tid">WFQ-39</td><td>Keyboard access worked but opened on the first option instead of the selected one, plus ARIA refinements</td><td>Polish to spec</td></tr>
+          <tr><td class="tid">WFQ-8, 9</td><td>Nav spacing and a grid-height flash on first load, found by our own QA</td><td>Internal, pre-UAT</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Part numbers &amp; SKUs from the export <span class="cat-count" style="background: var(--c-sku-bg); color: var(--c-sku);">6 tickets · 6%</span></h2>
+    <p>WFQ-98, 103, and 105 (option suffixes in the wrong order on configured part numbers) plus WFQ-34, 35, and 63 (wrong SKU or price values) all stem from how part numbers came through the Shift4Shop export, which Rich acknowledged on WFQ-35. This drove the catalog-wide audit that corrected 1,639 variants plus a 294-SKU sweep, validated against 16 years of order history. The class of problem is closed at the source, not just per ticket.</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-34</span><span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-35</span><span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-63</span><span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-98</span><span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-103</span><span class="chip" style="background: var(--c-sku-bg); color: var(--c-sku);">WFQ-105</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Search tickets rooted in export data <span class="cat-count" style="background: var(--c-search-bg); color: var(--c-search);">3 tickets · 3%</span></h2>
+    <p>WFQ-13, 14, and 37 read as "search takes me to the wrong product," but the investigation showed the lookup returned the <strong>correct product, variant, and price</strong> every time. What made the page look wrong: the imported data has photos of fittings attached as variant images (the shared cause behind five picture tickets), and the malformed part number Rich clicked was the export's suffix-order problem, already corrected the same day in the SKU audit. Our own share was small: the result link opened the default variant instead of the searched one (the variant id existed but was not used), and the lookup middleware's fallback ranking needed fixing. Both done and verified against five part numbers across product types.</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-search-bg); color: var(--c-search);">WFQ-13</span><span class="chip" style="background: var(--c-search-bg); color: var(--c-search);">WFQ-14</span><span class="chip" style="background: var(--c-search-bg); color: var(--c-search);">WFQ-37</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Figma alignment <span class="cat-count" style="background: var(--c-figma-bg); color: var(--c-figma);">4 tickets · 4%</span></h2>
+    <p>The entire surface where the client claims the build differs from the presented design: background color (WFQ-16), product image and type sizing (WFQ-67), the sticky price/SKU bar (WFQ-68), all resolved, and the collections layout with photo and description (WFQ-32), still open. Four tickets out of 102 is a strong result for design fidelity.</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-figma-bg); color: var(--c-figma);">WFQ-16</span><span class="chip" style="background: var(--c-figma-bg); color: var(--c-figma);">WFQ-32</span><span class="chip" style="background: var(--c-figma-bg); color: var(--c-figma);">WFQ-67</span><span class="chip" style="background: var(--c-figma-bg); color: var(--c-figma);">WFQ-68</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions &amp; tooling <span class="cat-count" style="background: var(--c-q-bg); color: var(--c-q);">4 tickets · 4%</span></h2>
+    <p>WFQ-21 and 26 ("what is this section for?"), WFQ-101 ("What is this? Stories?"), and WFQ-11, which is about the Marker.io preview bar itself, not the site.</p>
+    <div class="chips">
+      <span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-11</span><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-21</span><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-26</span><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-101</span>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <h2>Reclassified on evidence</h2>
+    <p class="muted small">Six tickets were filed as bugs and marked "Resolved," which made them look like faults. The recorded investigation notes on each ticket show otherwise.</p>
+    <div class="cards">
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-10</span> Header hidden during search <span class="verdict v-change">Intentional design, adjusted</span></h3>
+        <p>The search panel was <b>deliberately built</b> to pin to the top of the viewport; the code had a method named alignToViewportTop. It worked exactly as designed. The client preferred results below the header, so the design was changed.</p>
+      </div>
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-60</span> "Blank" quote page, configuration lost <span class="verdict v-change">Intentional gating + new feature</span></h3>
+        <p>The quote modal is <b>intentionally limited to logged-in customers</b> because the quote API requires a customer id. Rich tested as a guest, so he got the plain contact link by design. His suggestion was then built as an enhancement: a pre-filled guest quote page plus shareable configured-hose URLs.</p>
+      </div>
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-72</span> Back button lands at page bottom <span class="verdict v-change">Standard browser behavior, improved</span></h3>
+        <p>Browsers restore the scroll offset of the taller, fully loaded page onto fresh page 1 of an infinite-scroll grid. <b>The back button was never broken.</b> A custom scroll-restore script was built on top of default browser behavior as an improvement.</p>
+      </div>
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-40 / 43</span> Part number missing in cart and checkout <span class="verdict v-change">Feature extension</span></h3>
+        <p>Configured hoses already showed their part number everywhere. The ask was to <b>extend that to all standard products</b>, including Shopify's own checkout page via line item properties. The wrong thumbnail in WFQ-43 was legacy data: the old site's import attached fitting photos as variant images.</p>
+      </div>
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-13 / 14</span> "Search takes me to the wrong product" <span class="verdict v-data">Legacy data, minor link gap</span></h3>
+        <p>The lookup returned the <b>correct product, variant, and price</b>. The page looked wrong because it opened on the default variant (one missing URL parameter on our side) and because imported fitting photos sit as variant images, the shared cause behind five separate picture tickets.</p>
+      </div>
+      <div class="card">
+        <h3><span class="chip" style="background: var(--c-q-bg); color: var(--c-q);">WFQ-37</span> Lookup showing invalid results <span class="verdict v-mixed">Split: export data + middleware</span></h3>
+        <p>The wrong-product redirect was the export's <b>SKU suffix-order defect</b>, already corrected in the catalog audit the same day it was filed. The unrelated-suggestions half was a genuine fallback-ranking bug in the lookup middleware, fixed and verified against five part numbers.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>How to talk about this queue</h2>
+    <p class="small muted">Status labels in Marker describe work completed, not fault accepted. The framing below keeps reporting accurate without conceding defects that never existed.</p>
+    <div class="say">
+      <div class="no">
+        <h3>Avoid</h3>
+        <ul>
+          <li>"102 bugs reported during UAT"</li>
+          <li>"Fixed" for data reconciliation or requested changes</li>
+          <li>Counting follow-up refinement tickets as failed fixes</li>
+          <li>"Our data was wrong" for export-inherited values</li>
+        </ul>
+      </div>
+      <div class="yes">
+        <h3>Say instead</h3>
+        <ul>
+          <li>"102 UAT feedback items: 40% data reconciliation, 28% change requests, 15% defects, all defects resolved"</li>
+          <li>"Completed" or "delivered" for changes; "corrected at the source" for data</li>
+          <li>"Refinement round" for follow-ups on change requests</li>
+          <li>"Values inherited from the Shift4Shop export, reconciled against the live site"</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Where things stand</h2>
+    <p><strong>92 resolved · 4 in progress · 6 open · 0 open defects.</strong> The 4 in progress are client artwork items (WFQ-45, 47, 48) and one display refinement (WFQ-15). Of the 6 open, three are change requests (WFQ-33, 57, 76), two are awaiting client assets or asset decisions (WFQ-27, 65), and one is the Figma collections layout (WFQ-32). Nothing open is a fault in the build.</p>
+  </section>
+
+  <footer>
+    Prepared from the full Marker.io ticket set including per-ticket investigation and verification notes · Makro Agency internal · 6 Aug 2026
+  </footer>
+</div>
+</body>
+</html>
